@@ -1,0 +1,24 @@
+{
+    "require": {
+        "php": "^7.2",
+        "ext-json": "*",
+        "cakephp/database": "^4.1",
+        "firebase/php-jwt": "^5.2",
+        "fullpipe/twig-webpack-extension": "^4.0",
+        "laminas/laminas-config": "^3.5.0",
+        "monolog/monolog": "^2.1",
+        "odan/session": "^5.1",
+        "php-di/php-di": "^6.3",
+        "slim/php-view": "^3.0",
+        "slim/psr7": "^1.2",
+        "slim/slim": "^4.5",
+        "slim/twig-view": "^3.1",
+        "symfony/mailer": "^5.2",
+        "symfony/twig-bridge": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+        "App\\": "src/"
+        }
+        }
+}

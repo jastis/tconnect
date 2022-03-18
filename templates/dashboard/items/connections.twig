@@ -1,0 +1,64 @@
+{% extends "dashboard/layout.twig" %}
+
+{% block content %}
+  
+               <!-- TABLE: LATEST ORDERS -->
+          <div class="card">
+            <div class="card-header border-transparent">
+              <h3 class="card-title">Connection Lists</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Full Name</th>
+                    <th>No. of Cards in Library</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% set cnt = 1 %}
+                    {% for con in cons %}
+                    
+                  <tr>
+                    <td><a href="#">{{cnt}}</a></td>
+                    <td>{{con.first_name}} {{con.last_name}}</td>
+                   
+                    <td><a href=""><span class="badge badge-success">{{con.cons}}</span></a></td>
+                    
+                    
+                  </tr>
+                  {% set cnt = cnt+ 1 %}
+                  {%endfor%}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            
+            <!-- /.card-footer -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+
+        
+        <!-- /.col -->
+      
+{% endblock %}
+
+{% block js%}
+<script src="/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+{%endblock%}

@@ -1,0 +1,238 @@
+{
+	"container": {
+		"flex": 1,
+		"backgroundColor": "#FFFFFF",
+		"zIndex": 5
+	},
+	"image": {
+		"flex": 1,
+		"justifyContent": "center",
+		"zIndex": 55
+	},
+	"mainCardView": {
+		"width": "99%",
+		"backgroundColor": "Colors.orange",
+		"borderRadius": 5,
+		"shadowColor": "#171717",
+		"shadowOffset": {
+			"width": -2,
+			"height": 4
+		},
+		"shadowOpacity": 0.7,
+		"shadowRadius": 3,
+		"elevation": 12,
+		"justifyContent": "flex-start",
+		"marginTop": 10,
+		"marginBottom": 6,
+		"margin": 3,
+		"backfaceVisibility": "hidden",
+		"height": 250,
+		"zIndex": 54
+	},
+	"mainCardViewBack": {
+		"position": "absolute",
+		"height": 250
+	},
+	"subCardView": {
+		"width": 100,
+		"position": "absolute",
+		"marginTop": "-15%",
+		"left": "3%",
+		"alignItems": "center",
+		"justifyContent": "center"
+	},
+	"companyNamePlate": {
+		"marginStart": 20,
+		"height": 90,
+		"width": 220,
+		"right": 1,
+		"marginLeft": 2,
+		"borderBottomLeftRadius": 50,
+		"borderTopLeftRadius": 50,
+		"backgroundColor": "#000000",
+		"borderColor": "#000000",
+		"borderWidth": 1,
+		"borderStyle": "solid",
+		"alignItems": "center",
+		"justifyContent": "center"
+	},
+	"upperRow": {
+		"flexDirection": "row",
+		"justifyContent": "flex-end"
+	},
+	"companyWeb": {
+		"fontFamily": "pinkPastel",
+		"height": 30,
+		"width": "100%",
+		"backgroundColor": "#000000",
+		"borderColor": "#000000",
+		"borderWidth": 1,
+		"borderStyle": "solid",
+		"alignItems": "center",
+		"justifyContent": "center",
+		"marginBottom": 25
+	},
+	"companyWebAbs": {
+		"height": 30,
+		"width": 100,
+		"position": "absolute",
+		"bottom": 0,
+		"right": 0,
+		"alignItems": "center",
+		"justifyContent": "center",
+		"marginBottom": 0,
+		"zIndex": 60
+	},
+	"CardLogo": {
+		"height": 50,
+		"width": 150,
+		"position": "absolute",
+		"top": "16%",
+		"left": "20%",
+		"alignItems": "center",
+		"justifyContent": "center"
+	},
+	"CompanyNameLogo": {
+		"fontFamily": "pinkPastel",
+		"width": 150,
+		"position": "absolute",
+		"top": "30%",
+		"left": "20%",
+		"alignItems": "center",
+		"justifyContent": "center"
+	},
+	"ContactsListEmail": {
+		"position": "absolute",
+		"right": 5,
+		"bottom": "29%",
+		"justifyContent": "flex-start",
+		"alignContent": "flex-start",
+		"width": 128,
+		"flexDirection": "row"
+	},
+	"ContactsListPhone": {
+		"position": "absolute",
+		"right": 1,
+		"bottom": "12%",
+		"justifyContent": "flex-start",
+		"alignContent": "flex-start",
+		"width": 140,
+		"flexDirection": "row"
+	},
+	"CardName": {
+		"right": -10,
+		"top": -90,
+		"position": "absolute",
+		"width": 200,
+		"justifyContent": "center",
+		"alignContent": "center",
+		"flexDirection": "row"
+	},
+	"role": {
+		"right": -10,
+		"top": 55,
+		"position": "absolute",
+		"width": 200,
+		"justifyContent": "center",
+		"alignContent": "center",
+		"flexDirection": "row"
+	},
+	"suffix": {
+		"right": -10,
+		"top": 50,
+		"position": "absolute",
+		"width": 200,
+		"justifyContent": "center",
+		"alignContent": "center",
+		"flexDirection": "row"
+	},
+	"addressList": {
+		"right": 2,
+		"top": "47%",
+		"width": 130,
+		"position": "absolute",
+		"flexDirection": "row",
+		"justifyContent": "flex-start",
+		"alignContent": "flex-start"
+	},
+	"social": {
+		"flexDirection": "row",
+		"justifyContent": "center",
+		"height": 30,
+		"width": "100%",
+		"position": "absolute",
+		"bottom": 1,
+		"backgroundColor": "#000000",
+		"borderColor": "#000000",
+		"borderWidth": 1,
+		"borderStyle": "solid",
+		"alignItems": "flex-end",
+		"marginBottom": 0,
+		"zIndex": 1
+	},
+	"SocialPlace": {
+		"top": "-40%"
+	},
+	"url": {
+		"color": "#ffffff"
+	},
+	"note": {
+		"color": "#000000",
+		"width": 150,
+		"left": 0,
+		"textAlign": "center"
+	},
+	"noteview": {
+		"marginTop": -4,
+		"right": 0,
+		"width": "85%"
+	},
+	"orgtext": {
+		"fontSize": 22,
+		"color": "#000000",
+		"fontFamily": "Landasans-Medium"
+	},
+	"orgview": {
+		"marginLeft": 0,
+		"alignItems": "center"
+	},
+	"mailtext": {
+		"marginTop": 1,
+		"color": "#000000",
+		"fontFamily": "Roboto-Normal"
+	},
+  "phonetext":{
+    "marginTop": -5,
+    "secmarginTop":-3,
+    "color": "#2E6F02",
+    "fontWeight": "bold",
+    "fontFamily": "Roboto-Normal"
+  },
+  "addresstext":{				
+    "color":"#000000",
+    "fontWeight": "bold",
+    "fontFamily": "Roboto-Regular",
+    "width":120
+  },
+  "roletext":{
+    "color": "#999999"                       
+  },
+  "suffixtext":{
+    "color": "#000000",
+    "fontSize":6,
+    "fontFamily":"Roboto-Bold"               
+  },
+  "lnametext":{							
+    "color": "#000000",
+     "fontFamily": "sabrina"
+  },
+  "fnametext":{				
+    "color": "#2E6F02",             
+    "fontFamily": "LemonMilk-Bold"
+  },
+  "bgimage":{
+"front": "https://tconnect.jastistechnology.com/upload/customcard/t3_front.png",
+"back":"https://tconnect.jastistechnology.com/upload/customcard/t3_back.png"
+  }
+
+}

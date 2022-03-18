@@ -1,0 +1,38 @@
+{% extends "dashboard/layout.twig" %}
+
+{% block content %}
+<div class="row d-flex justify-content-center flex-nowrap">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="fas fa-qrcode"></i>
+         Event Code
+        </h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body" id="qrcode" >
+        
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+{%endblock%}
+
+{% block js %}
+<script src="/dist/js/qrcode.min.js"></script>
+<script type="text/javascript">
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+        width : 500,
+        height : 500
+    });
+    
+    var org = '{{org}}';
+    var event = '{{event}}'
+    function makeCode () {		      
+        qrcode.makeCode("https://qr.page/g/n0IwhuHG8?{{org}}/{{event}}");
+    }
+    
+    makeCode ();
+    </script>
+{%endblock%}

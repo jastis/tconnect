@@ -1,0 +1,253 @@
+{% extends "dashboard/layout.twig" %}
+
+{% block content %}
+  
+      <div class="row">
+        
+        
+        <div class="col-12 col-sm-6 col-md-3">
+        <a href="/dashboard/cardlists" >  
+          <div class="info-box">
+           <span class="info-box-icon bg-info elevation-1"><i class="fas fa-address-card"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Cards</span>
+              
+              <span class="info-box-number">
+                {{card |number_format(0, '.', ',')}} 
+              </span>
+            </div>
+            
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div></a>
+        <!-- /.col -->
+        <div class="col-12 col-sm-6 col-md-3">
+          <a href="/dashboard/connectionlists"  >  
+          <div class="info-box mb-3">
+            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-link"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Conenctions</span>
+              <span class="info-box-number">{{cons|number_format(0, '.', ',')}}</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div></a>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix hidden-md-up"></div>
+
+        {% if user.usertype == 2 %}
+        <div class="col-12 col-sm-6 col-md-3">
+          <a href="/dashboard/allrequest" >
+          <div class="info-box mb-3">
+            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-layer-group"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Card Request</span>
+              <span class="info-box-number">{{cardreq|number_format(0, '.', ',')}}</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div></a>
+          <!-- /.info-box -->
+        </div>
+        <div class="col-12 col-sm-6 col-md-3">
+          <a href="/dashboard/customcards"  >
+          <div class="info-box mb-3">
+            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-edit"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Custom Templates</span>
+              <span class="info-box-number">{{customcard|number_format(0, '.', ',')}}</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div></a>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-12 col-sm-6 col-md-3">
+          <a href="/dashboard/paidusers">
+          <div class="info-box mb-3">
+            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Paid Users</span>
+              <span class="info-box-number">{{paidcard|number_format(0, '.', ',')}}</span>
+            </div>
+            <!-- /.info-box-content -->
+          </div></a>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+
+      <!-- Main row -->
+      <div class="row">
+        <!-- Left col -->
+        <div class="col-md-12">
+          <!-- MAP & BOX PANE -->
+          
+          <div class="row">
+           
+            <!-- /.col -->
+
+           
+          
+            <div class="col-md-3">
+              <!-- Info Boxes Style 2 -->
+              <div class="info-box mb-3 bg-warning">
+                <span class="info-box-icon"><i class="fas fa-user"></i></span>
+    
+                <div class="info-box-content">
+                  <span class="info-box-text">Total Users</span>
+                  <span class="info-box-number">{{alluser|number_format(0, '.', ',')}}</span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              </div>
+              <div class="col-md-3">
+              <!-- /.info-box -->
+              <a href="/dashboard/activesubs">
+              <div class="info-box mb-3 bg-success">
+                <span class="info-box-icon"><i class="fas fa-money-bill-alt"></i></span>
+    
+                <div class="info-box-content">
+                  <span class="info-box-text">Active Subscriptions</span>
+                  <span class="info-box-number">{{subscribed|number_format(0, '.', ',')}}</span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              </a>
+            </div>
+            <div class="col-md-3">
+              <!-- /.info-box -->
+              <a href="/dashboard/expusers">
+              <div class="info-box mb-3 bg-danger">
+                <span class="info-box-icon"><i class="fas fa-times-circle"></i></span>
+    
+                <div class="info-box-content">
+                  <span class="info-box-text">Expired Subscriptions</span>
+                  <span class="info-box-number">{{expsub|number_format(0, '.', ',')}}</span>
+                </div>
+                <!-- /.info-box-content -->
+              </div></a>
+            </div>
+            <div class="col-md-3">
+              <!-- /.info-box -->
+              <a href="/dashboard/freeusers">
+                <div class="info-box mb-3 bg-info">
+                <span class="info-box-icon"><i class="fas fa-users"></i></span>
+    
+                <div class="info-box-content">
+                  <span class="info-box-text">Free Template Users</span>
+                  <span class="info-box-number">{{freeuser|number_format(0, '.', ',')}}</span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              </a>
+            </div>
+            <div class="col-md-3">
+            </div>
+          </div>
+          <!-- /.row -->
+
+          <!-- TABLE: LATEST ORDERS -->
+          <div class="card">
+            <div class="card-header border-transparent">
+              <h3 class="card-title">Latest Orders</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table m-0">
+                  <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>User Limit</th>
+                    <th>Request Date</th>
+                    <th>Contact Email</th>
+                    <th>front design</th>
+                    <th>back design</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% for req in cardrequest %}
+                  <tr>
+                    <td><a href="/newtheme/{{req.id}}">OR{{req.id}}</a></td>
+                    <td>{{req.card_limit}}</td>
+                    <td><span class="badge badge-success">{{req.req_date}}</span></td>
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">{{req.r_email}}</div>
+                    </td>
+                    <td><div class="col-sm-2">
+                      <a href="/upload/request/{{req.front_image}}" data-toggle="lightbox" data-title="{{req.r_name}}" data-gallery="gallery">
+                        <img src="/upload/request/{{req.front_image}}" width="125px" height="75px" class="mb-2" alt="black sample"/>
+                      </a>
+                    </div></td>
+                    <td><div class="col-sm-2">
+                      <a href="/upload/request/{{req.back_image}}" data-toggle="lightbox" data-title="{{req.r_name}}" data-gallery="gallery">
+                        <img src="/upload/request/{{req.back_image}}" width="125px" height="75px" class="mb-2" alt="black sample"/>
+                      </a>
+                    </div></td>
+                  </tr>
+                  {%endfor%}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer clearfix">
+              
+              <a href="/dashboard/allrequest" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+            </div>
+            <!-- /.card-footer -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+{%endif%}
+        
+        <!-- /.col -->
+      </div>
+      <div class="modal fade" id="modal-lg">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Large Modal</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+{% endblock %}
+
+{% block js%}
+<script src="/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+{%endblock%}

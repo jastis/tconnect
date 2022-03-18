@@ -1,0 +1,79 @@
+{% extends "dashboard/layout.twig" %}
+
+{% block content %}
+
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Attendance Report Range</h3>
+          <div class="card-tools">
+            <div class="row">
+              <div class="col-md-4">
+            <select class="custom-select" name="org_id" id="org_id">
+              <option value="">Organization</option>
+              {% for org in orgs %}
+              <option value="{{org.org_id}}">{{org.name}}</option>
+              {%endfor%}
+            </select></div>
+            <div class="col-md-4">
+            <select class="custom-select " name="event_id" id="event_id">
+              <option value="">Event</option>
+              {% for event in events %}
+              <option value="{{event.event_id}}">{{event.event_name}}</option>
+              {%endfor%}
+            </select></div>
+           
+            <button type="button" class="btn btn-primary btn-sm daterange" title="Date range">
+              <i class="far fa-calendar-alt"></i>
+            </button>
+            <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+         </div>
+          </div>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+          <table id="example1" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Remark</th>
+             
+            </tr>
+            </thead>
+            <tbody>
+              {%for att in result%}
+            <tr>
+              <td>{{ att.time_in |date("Y/m/d") }}</td>
+              <td>{{att.first_name}} {{att.last_name}}</td>
+              <td>{{ att.time_in|date("F jS\\,Y \\a\\t g:ia") }}
+              </td>
+              <td>{{ att.time_out is empty ? "" :att.time_out|date("F jS\\,Y \\a\\t g:ia") }}</td>
+              <td></td>
+            </tr>
+            {%endfor%}
+                        </tbody>
+            <tfoot>
+            {# <tr>
+              <th>Rendering engine</th>
+              <th>Browser</th>
+              <th>Platform(s)</th>
+              <th>Engine version</th>
+              <th>CSS grade</th>
+            </tr> #}
+            </tfoot>
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  {%endblock%}
+
+{% block js%}
+<script src="/dist/js/attendance.js"></script>
+{%endblock%}

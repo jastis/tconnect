@@ -1,0 +1,74 @@
+{% extends "dashboard/layout.twig" %}
+
+{% block content %}
+  
+               <!-- TABLE: LATEST ORDERS -->
+          <div class="card">
+            <div class="card-header border-transparent">
+              <h3 class="card-title">Expired Card Subscribers</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone No.</th>
+                    <th>Template</th>
+                    <th>Sub. Expiry Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% set cnt = 1 %}
+                    {% for expuser in expusers %}
+                    
+                  <tr>
+                    <td><a href="#">{{cnt}}</a></td>
+                    <td>{{expuser.first_name}} {{expuser.last_name}}</td>
+                    <td>{{expuser.email}}</td>
+                    <td>{{expuser.phone_no}}</td>
+                    <td>{{expuser.name}}</td>
+                    <td>{{expuser.expiry_date}}</td>
+                    <td><span class="{{expuser.status ==1 ? 'badge badge-success':'badge badge-danger'}}">{{expuser.status==1?'Active':'Expired'}}</span></td>
+                    <td><a id="sendmail" href="/sendmail/{{expuser.user_id}}/{{expuser.name}}" class="btn btn-app bg-warning">
+                      <i class="fas fa-envelope"></i> Send Reminder
+                    </a></td>
+                  </tr>
+                  {% set cnt = cnt+ 1 %}
+                  {%endfor%}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            
+            <!-- /.card-footer -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+
+        
+        <!-- /.col -->
+      
+{% endblock %}
+
+{% block js%}
+<script src="/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+<script src="/dist/js/mailsender.js"></script>
+{%endblock%}
