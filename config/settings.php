@@ -63,7 +63,7 @@ $settings['cost']=[
 
 $settings['db'] = [
     'driver' => \Cake\Database\Driver\Mysql::class,
-    'host' => 'localhost:3308',
+    'host' => $config['db']['host'] ,//'localhost:3308',
     'database' => $config['db']['name'],
     'username' => $config['db']['username'],
     'password' => $config['db']['password'],
@@ -76,7 +76,8 @@ $settings['db'] = [
     // PDO options
     'flags' => [
         // Turn off persistent connections
-        PDO::ATTR_PERSISTENT => false,
+        PDO::ATTR_PERSISTENT => true,
+        //PDO::ATTR_PERSISTENT => false,
         // Enable exceptions
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         // Emulate prepared statements
