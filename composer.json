@@ -1,6 +1,6 @@
 {
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-json": "*",
         "cakephp/database": "^4.1",
         "firebase/php-jwt": "^5.2",
