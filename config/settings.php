@@ -56,9 +56,10 @@ $settings['cost']=[
 'currency'=> $config['cost']['currency'],
 'symbol'=> $config['cost']['symbol'],
 'design'=>  $config['cost']['design'],
-    '3-Month' =>  $config['cost']['3-Month'],
-    '6-Month' => $config['cost']['6-Month'],
-    '1-Year' =>  $config['cost']['1-Year']
+    'quarterly' =>  $config['cost']['quarterly'],
+    'biannual' => $config['cost']['biannual'],
+    'yearly' =>  $config['cost']['yearly']
+    
 ];
 
 $settings['db'] = [

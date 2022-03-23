@@ -17,10 +17,7 @@ $settings['sms']['asid'] = ('SMS_ASID');
 $settings['sms']['token'] =getenv('SMS_TOKEN');
 $settings['sms']['msid'] = getenv('SMS_MSID');
 
-$settings['db']['host'] = 'localhost:3306';
-$settings['db']['name'] = 'tconnect_db';
-$settings['db']['username'] = 'root';
-$settings['db']['password'] = '';
+
 
 
 
