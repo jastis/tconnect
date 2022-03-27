@@ -1,0 +1,74 @@
+{% extends "dashboard/layout.twig" %}
+
+{% block content %}
+  
+               <!-- TABLE: LATEST ORDERS -->
+          <div class="card">
+            <div class="card-header border-transparent">
+              <h3 class="card-title">Latest Orders</h3>
+
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>User Limit</th>
+                    <th>Request Date</th>
+                    <th>Contact Email</th>
+                    <th>front design</th>
+                    <th>back design</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    {% for req in cardrequest %}
+                  <tr>
+                    <td><a href="/newtheme/{{req.id}}">OR{{req.id}}</a></td>
+                    <td>{{req.card_limit}}</td>
+                    <td><span class="badge badge-success">{{req.req_date}}</span></td>
+                    <td>
+                      <div class="sparkbar" data-color="#00a65a" data-height="20">{{req.r_email}}</div>
+                    </td>
+                    <td><div class="col-sm-2">
+                      <a href="/upload/request/{{req.front_image}}" data-toggle="lightbox" data-title="{{req.r_name}}" data-gallery="gallery">
+                        <img src="/upload/request/{{req.front_image}}" width="125px" height="75px" class="mb-2" alt="black sample"/>
+                      </a>
+                    </div></td>
+                    <td><div class="col-sm-2">
+                      <a href="/upload/request/{{req.back_image}}" data-toggle="lightbox" data-title="{{req.r_name}}" data-gallery="gallery">
+                        <img src="/upload/request/{{req.back_image}}" width="125px" height="75px" class="mb-2" alt="black sample"/>
+                      </a>
+                    </div></td>
+                  </tr>
+                  {%endfor%}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.card-body -->
+            
+            <!-- /.card-footer -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+
+        
+        <!-- /.col -->
+      
+{% endblock %}
+
+{% block js%}
+<script src="/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+{%endblock%}

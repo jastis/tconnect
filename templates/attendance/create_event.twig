@@ -1,0 +1,147 @@
+{% extends "dashboard/layout.twig" %}
+
+{% block content %}
+<div class="row">
+
+
+<div class="col-md-5">
+    <div class="card card-success">
+        <div class="card-header">
+          <h3 class="card-title">Create Event</h3>
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <form id="frm_event">
+        <div class="card-body">
+          <div class="form-group">
+            <label for="org_name">Name of Event</label>
+            <input type="text" class="form-control" id="event_name" name="event_name" placeholder="Event Name">
+          </div>
+          <div class="form-group">
+            <label>Organization</label>
+            <select class="custom-select" name="org_id">
+              {% for org in orgs %}
+              <option value="{{org.org_id}}">{{org.name}}</option>
+              {%endfor%}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Start Date:</label>
+              <div class="input-group date">
+                  <input type="datetime-local"  id="start_date" name="start_date" class="form-control" >
+                  
+              </div>
+          </div>
+          <div class="form-group">
+            <label>End Date:</label>
+              <div class="input-group date" >
+                  <input type="datetime-local" id="end_date" name="end_date" class="form-control">
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="place">Place of Event (Optional)</label>
+          <input type="text" class="form-control" id="place" name="place" placeholder="Enter Cordinate e.g 6.432345,3.124456">
+          </div>
+      </div>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary" id="btn_event">Create Event</button>
+      </div>
+      </form>
+</div>
+
+</div>
+<div id="map"></div>
+</div>
+<div class="card">
+    <div class="card-header border-0 ui-sortable-handle" style="cursor: move;">
+        <h3 class="card-title">
+          <i class="fas fa-map-marker-alt mr-1"></i>
+          Latest Events
+        </h3>
+        <!-- card tools -->
+        <div class="card-tools">
+          <button type="button" class="btn btn-primary btn-sm daterange" title="Date range">
+            <i class="far fa-calendar-alt"></i>
+          </button>
+          <button type="button" class="btn btn-primary btn-sm" data-card-widget="collapse" title="Collapse">
+            <i class="fas fa-minus"></i>
+          </button>
+        </div>
+        <!-- /.card-tools -->
+      </div>
+    <!-- /.card-header -->
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table m-0">
+          <thead>
+          <tr>
+            <th>Event</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+          </tr>
+          </thead>
+          <tbody>
+            {% for event in events %}
+          <tr>
+            <td><a href="/attendance/qr/{{event.org_id}}/{{event.event_id}}">{{event.event_name}}</a></td>
+            <td>{{event.start_date}}</td>
+            <td>{{event.end_date}}</td>
+            
+          </tr>
+          {%endfor%}
+          </tbody>
+        </table>
+      </div>
+      <!-- /.table-responsive -->
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer clearfix">
+      <!-- <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a> -->
+      <a href="/events" class="btn btn-sm btn-secondary float-right">View All Event</a>
+    </div>
+    <!-- /.card-footer -->
+  </div>
+{% endblock %}
+
+{% block js%}
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAd9Irx6VvE3zTxG2UMocH2LyKZv1Dloug&callback=initMap&libraries=&v=weekly"
+async></script>
+<script src="/dist/js/org.js"></script>
+<script>
+  function initMap() {
+    const myLatlng = { lat: -25.363, lng: 131.044 };
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 4,
+      center: myLatlng,
+    });
+    // Create the initial InfoWindow.
+    let infoWindow = new google.maps.InfoWindow({
+      content: "Click the map to get Lat/Lng!",
+      position: myLatlng,
+    });
+  
+    infoWindow.open(map);
+    // Configure the click listener.
+    map.addListener("click", (mapsMouseEvent) => {
+      // Close the current InfoWindow.
+      infoWindow.close();
+      // Create a new InfoWindow.
+      infoWindow = new google.maps.InfoWindow({
+        position: mapsMouseEvent.latLng,
+      });
+      infoWindow.setContent(
+        JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2)
+      );
+      infoWindow.open(map);
+    });
+  }
+</script>
+{%endblock%}
