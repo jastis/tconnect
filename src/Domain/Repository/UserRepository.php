@@ -40,7 +40,7 @@ class UserRepository
             'subscription' => 1,
             'status' => 0,
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-          
+            'refcode'=>$data['refcode']
         ];
         $newId = (int)$this->queryFactory->newInsert($table, $this_data)
             ->execute()

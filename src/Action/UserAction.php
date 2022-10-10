@@ -88,7 +88,7 @@ class UserAction
         if ((int) $result['data']['id'] > 0) {
             $this->SendSMS('Thank you, use this link to verify your Teekonect account. '.$result['vlink'] , ('%2B'.$data['phone_no']));
             $email = (new TemplatedEmail())
-                ->from('donotreply@trausox.com')
+                ->from('donotreply@briisi.com')
                 ->to($data['email'])
                 ->subject('Welcome to Teekonect')
 
@@ -331,7 +331,7 @@ class UserAction
         $data['first_name'] = $result['first_name'];
         $data['code'] = $result['newPass'];
         $email = (new TemplatedEmail())
-            ->from('donotreply@tkonet.com')
+            ->from('donotreply@briisi.com')
             ->to($data['email'])
             ->subject('Password Reset')
 

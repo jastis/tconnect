@@ -38,6 +38,15 @@ public function __invoke(
 ServerRequestInterface $request,
 ResponseInterface $response
 ): ResponseInterface {
+    $response->getBody()->write($this->twig->render('/home/index.html',
+     ));
+            return $response;
+}
+
+public function dashboard(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
     $tuser = $this->session->get('TUser');
 $allRequest = $this->cService->getLatestCardRequest();
 if ($tuser['usertype'] == 2){
@@ -64,8 +73,6 @@ $response->getBody()->write($this->twig->render('/dashboard/home.twig',
 ]));
         return $response;
 }
-
-
 
 public function cardRequest(
     ServerRequestInterface $request,
@@ -188,6 +195,15 @@ public function login(
     ResponseInterface $response, array $args
 ): ResponseInterface {
     $response->getBody()->write($this->twig->render('/dashboard/login-v2.html', [
+    ]));
+            return $response;
+}
+
+public function privacy(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $response->getBody()->write($this->twig->render('/dashboard/privacy.twig', [
     ]));
             return $response;
 }

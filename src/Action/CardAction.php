@@ -103,7 +103,7 @@ class CardAction
     if ($result['Code'] === 200){
         $this->SendSMS('Thank you, Your custom template request with refID-'. $data['tx_ref'].' successful. We will notify you when the design is ready. Teekonect'   , ('%2B'.$data['phone']));
         $email = (new TemplatedEmail())
-                    ->from('info@trausox.com')
+                    ->from('info@briisi.com')
                     ->to($data['email'])
                     ->subject('Request Confirmation')
 
@@ -161,7 +161,7 @@ class CardAction
         $result = $this->cservices->createTheme($data);
         // if ((int) $result['data']['id'] > 0) {
         //     $email = (new TemplatedEmail())
-        //         ->from('donotreply@trausox.com')
+        //         ->from('donotreply@briisi.com')
         //         ->to($data['email'])
         //         ->subject('Welcome to Teekonect')
         //         // path of the Twig template to render
@@ -191,7 +191,7 @@ class CardAction
     ): int {
         $result =0;
             $email = (new TemplatedEmail())
-                ->from('donotreply@trausox.com')
+                ->from('donotreply@briisi.com')
                 ->to($args['email'])
                 ->subject('Pending Subscription Renewal')
                 // path of the Twig template to render

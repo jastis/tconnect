@@ -11,7 +11,8 @@ use App\Middleware\AuthHeaderMiddleware;
 
 use Slim\App;
 return function (App $app) {
-    $app->get('/', \App\Action\HomeAction::class)->add(UserAuthMiddleware::class)->setName('home'); 
+    $app->get('/', \App\Action\HomeAction::class)->setName('home'); 
+    $app->get('/teekonect', \App\Action\HomeAction::class.':dashboard')->add(UserAuthMiddleware::class)->setName('dashboard'); 
     $app->get('/login', \App\Action\HomeAction::class.':login')->setName('login');
     $app->get('/logout', \App\Action\HomeAction::class.':logout')->setName('logout');
     $app->get('/register', \App\Action\HomeAction::class.':register')->setName('register');
@@ -25,7 +26,7 @@ return function (App $app) {
     $app->get('/newtheme', \App\Action\HomeAction::class.':createTheme')->add(UserAuthMiddleware::class)->setName('createTheme');
     $app->get('/newtheme/{req_id}', \App\Action\HomeAction::class.':createTheme')->add(UserAuthMiddleware::class);
     $app->get('/sendmail/{user_id}/{cardname}', \App\Action\CardAction::class.':mailSender')->add(UserAuthMiddleware::class);
-
+    $app->get('/privacy', \App\Action\HomeAction::class.':privacy');
     $app->get('/cardrequests', \App\Action\HomeAction::class .':cardRequest')->add(UserAuthMiddleware::class)->setName('cardRequest');
  
     $app->group('/user', function (Group $group) {
@@ -91,6 +92,7 @@ return function (App $app) {
         $group->GET('/activesubs', HomeAction::class .':getActiveSubscribers')->add(UserAuthMiddleware::class);
         $group->GET('/freeusers', HomeAction::class .':getFreeUsers')->add(UserAuthMiddleware::class);
         $group->GET('/customcards', HomeAction::class .':getCustomCardList')->add(UserAuthMiddleware::class);
+        
     });
     
 };
