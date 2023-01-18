@@ -1,9 +1,9 @@
 <?php
 
-$settings['db']['host'] = 'localhost:3308';
+$settings['db']['host'] = 'localhost:3309';
 $settings['db']['name'] = 'tconnect_db';
 $settings['db']['username'] = 'root';
-$settings['db']['password'] = '';
+$settings['db']['password'] = 'Thedirector@1';
 // $settings['db']['host'] = 'localhost:3306';
 // $settings['db']['name'] = 'briisico_teekonect_db';
 // $settings['db']['username'] = 'briisico_admin';

@@ -126,6 +126,18 @@ public function getPaidUsers(
             return $response;
 }
 
+public function getAllUsers(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $allUsers = $this->cService->getAllUsers();
+    $response->getBody()->write($this->twig->render('/dashboard/items/allusers.twig',
+     ['user'=>$this->session->get('TUser'),
+     'allusers'=>$allUsers
+    ]));
+            return $response;
+}
+
 public function getFreeUsers(
     ServerRequestInterface $request,
     ResponseInterface $response, array $args
@@ -309,6 +321,17 @@ public function events(
     ]));
             return $response;
 }
+
+public function create_Ugroup(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $usergroup = $this->aService->getUserGroup($this->session->get('TUser')['user_id']);
+    $response->getBody()->write($this->twig->render('/attendance/usergroup.twig', ['user'=>$this->session->get('TUser'), 'usergroup'=>$usergroup
+    ]));
+            return $response;
+}
+
 public function createTheme(
     ServerRequestInterface $request,
     ResponseInterface $response, array $args

@@ -87,6 +87,11 @@ final class CardService
         return $this->repository->getPaidUsers();
     }
 
+    public function getAllUsers(): array
+    {
+        return $this->repository->getAllUsers();
+    }
+
     public function getSubscriptionByUser(string $user_id): array
     {
         return $this->repository->getSubscriptionByUser($user_id);

@@ -295,7 +295,7 @@ class UserAction
         ResponseInterface $response
     ): ResponseInterface {
         $data = (array) $request->getParsedBody();
-        $data['userid'] = (int) $this->session->get('user')['id'];
+        $data['userid'] = (int) $this->session->get('TUser')['id'];
         $result = $this->uservices->updateUserProfile($data);
         $response->getBody()->write((string) json_encode($result));
         return $response
@@ -308,7 +308,7 @@ class UserAction
         ResponseInterface $response
     ): ResponseInterface {
         $data = (array) $request->getParsedBody();
-        $data['userid'] = (isset($data['id'])) ? $data['id'] : (int) $this->session->get('user')['id'];
+        $data['userid'] = (isset($data['id'])) ? $data['id'] : (int) $this->session->get('TUser')['id'];
         $result = $this->uservices->updatePasswordById($data);
         $response->getBody()->write((string) json_encode($result));
         return $response

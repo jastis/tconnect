@@ -55,8 +55,9 @@ $(document).on("submit", "#frm_org", function (e) {
 				animation: true,
 				title: e.responseText,
 			});
-            $("#btn_event").html("Create Event");
-            $("#btn_event").prop("disabled", false);
+            $("#btn_org").html("Create Organization");
+            $("#btn_org").prop("disabled", false);
+            
 		},
 	});
 });
@@ -100,4 +101,45 @@ $(document).on("submit", "#frm_event", function (e) {
             $("#btn_event").prop("disabled", false);
 		},
 	});
+});
+
+$(document).on("submit", "#frm_usergroup", function (e) {
+  $("#btn_usergroup").html(
+    '<img src= "/img/loading.svg" width="40" height="40"/>'
+);
+$("#btn_usergroup").prop("disabled", true);
+// Stop form from submitting normally
+e.preventDefault();
+e.stopPropagation();
+
+let form = $("#frm_usergroup")[0];
+let data = new FormData(form);
+
+$.ajax({
+  type: "POST",
+  enctype: "multipart/form-data",
+  url: "/attendance/add/usergroup",
+  data: data,
+  processData: false,
+  contentType: false,
+  cache: false,
+  timeout: 600000,
+  success: function (data) {
+    toastMixin.fire({
+              title: data["message"],
+              icon: "info",
+          });
+          $("#btn_usergroup").html("Upload Users");
+          $("#btn_usergroup").prop("disabled", false);
+         location.reload();
+  },
+  error: function (e) {
+    toastMixinF.fire({
+      animation: true,
+      title: e.responseText,
+    });
+          $("#btn_usergroup").html("Upload Users");
+          $("#btn_usergroup").prop("disabled", false);
+  },
+});
 });

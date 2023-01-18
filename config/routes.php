@@ -23,6 +23,7 @@ return function (App $app) {
     $app->get('/attendance', \App\Action\HomeAction::class.':attendance')->add(UserAuthMiddleware::class)->setName('attendance');
     $app->get('/events', \App\Action\HomeAction::class.':events')->add(UserAuthMiddleware::class)->setName('events');
     $app->get('/events/create', \App\Action\HomeAction::class.':createEvent')->add(UserAuthMiddleware::class)->setName('create_event');
+    $app->get('/events/usergroup', \App\Action\HomeAction::class.':create_Ugroup')->add(UserAuthMiddleware::class)->setName('create_usergroup');
     $app->get('/newtheme', \App\Action\HomeAction::class.':createTheme')->add(UserAuthMiddleware::class)->setName('createTheme');
     $app->get('/newtheme/{req_id}', \App\Action\HomeAction::class.':createTheme')->add(UserAuthMiddleware::class);
     $app->get('/sendmail/{user_id}/{cardname}', \App\Action\CardAction::class.':mailSender')->add(UserAuthMiddleware::class);
@@ -52,12 +53,14 @@ return function (App $app) {
     $app->group('/attendance', function (Group $group) {
         $group->POST('', AttendanceAction::class .':getProfile');
         $group->POST('/add/organization', AttendanceAction::class .':addOrganization')->add(UserAuthMiddleware::class);
+        $group->POST('/add/usergroup', AttendanceAction::class .':addUserGroup')->add(UserAuthMiddleware::class);
         $group->POST('/add/event', AttendanceAction::class .':addEvent')->add(UserAuthMiddleware::class);
         $group->POST('/add/check', CardAction::class .':checkIncheckOut');
         $group->POST('/{organization}/{start}/{end}', AttendanceAction::class .':getAttendanceByOrg')->add(UserAuthMiddleware::class);
         $group->GET('/report/all', AttendanceAction::class .':getAttendanceRange')->add(UserAuthMiddleware::class);
         $group->GET('/report/summary', AttendanceAction::class .':getAttendanceSummaryRange')->add(UserAuthMiddleware::class);
         $group->GET('/qr/{org_id}/{event}',HomeAction::class .':getQR')->add(UserAuthMiddleware::class);
+        
     });
 
 
@@ -88,6 +91,7 @@ return function (App $app) {
         $group->GET('/cardlists', HomeAction::class .':getCardLists')->add(UserAuthMiddleware::class);
         $group->GET('/connectionlists', HomeAction::class .':getConnectionLists')->add(UserAuthMiddleware::class);
         $group->GET('/paidusers', HomeAction::class .':getPaidUsers')->add(UserAuthMiddleware::class);
+        $group->GET('/allusers', HomeAction::class .':getAllUsers')->add(UserAuthMiddleware::class);
         $group->GET('/expusers', HomeAction::class .':getExpiredSubscribers')->add(UserAuthMiddleware::class);
         $group->GET('/activesubs', HomeAction::class .':getActiveSubscribers')->add(UserAuthMiddleware::class);
         $group->GET('/freeusers', HomeAction::class .':getFreeUsers')->add(UserAuthMiddleware::class);

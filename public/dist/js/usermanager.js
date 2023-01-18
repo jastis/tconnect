@@ -40,7 +40,7 @@ var toastMixin = Swal.mixin({
                         animation: true,
                         title: "Signed in Successfully",
                     });
-                    location.replace('/');
+                    location.replace('/teekonect');
     
                     $("#btnSignIn").prop("disabled", false);
                 } else if (data["statusCode"] >= 201 && data["statusCode"] <= 299) {
@@ -109,9 +109,8 @@ var toastMixin = Swal.mixin({
   $(document).on('click','#req_new_pw', function(e){
     e.preventDefault();
     e.stopPropagation();
+   
     var url = '/user/forgot_pw'
-     
-    event.preventDefault();
     $.post(url, $("#reset_pw_frm").serialize())
         .done(function (data) {
                $("#req_new_pw").prop("disabled", false);
@@ -123,10 +122,47 @@ var toastMixin = Swal.mixin({
         .fail(function (e) {
             const obj = JSON.parse(e.responseText); //obj.error.Description,
             $("#req_new_pw").html("Login");
-            $("#btnreq_new_pwSignIn").prop("disabled", false);
+            $("#req_new_pw").prop("disabled", false);
             toastMixinF.fire({
                 animation: true,
                 title: obj.error.Description
             });
         });
       });
+
+      $(document).on('click','#change_password', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+       
+        if($("#password").val() != $("#cpassword").val() ){
+          toastMixinF.fire({
+            animation: true,
+            title: 'Password Mismatch!'
+        });
+          return false;
+        }
+        var url = '/user/reset_pw'
+        $("#change_password").html(
+          '<img src= "/img/loading.svg" width="40" height="40"/>'
+      );
+      $("#change_password").prop("disabled", false);
+        
+        $.post(url, $("#frm_change_password").serialize())
+            .done(function (data) {
+                   $("#change_password").prop("disabled", false);
+                    toastMixin.fire({
+                      animation: true,
+                      title: data.description//"Password Reset Successful, Check your mail the new password.",
+                  });
+
+            })
+            .fail(function (e) {
+                const obj = JSON.parse(e.responseText); //obj.error.Description,
+                $("#change_password").html("Change Password");
+                $("#change_password").prop("disabled", false);
+                toastMixinF.fire({
+                    animation: true,
+                    title: obj.error.Description
+                });
+            });
+          });

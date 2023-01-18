@@ -456,6 +456,18 @@ class CardRepository
         return $result;
     }
 
+    public function getAllUsers(): array
+    {
+        $result = [];
+        $query = $this->queryFactory->newSelect('usertbl')->select(['first_name', 'last_name','email','phone_no']);
+        $rows = $query->execute()->fetchAll('assoc');
+        foreach ($rows as $row) {
+
+            $result[] = $row;
+        }
+        return $result;
+    }
+
     public function getExpiredSubscribers(): array
     {
         $this->checkSubscription();
