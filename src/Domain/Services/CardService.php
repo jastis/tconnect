@@ -78,6 +78,16 @@ final class CardService
         return $this->repository->getCardList();
     }
 
+    public function countSubUsers(string $user_id): int{
+        return $this->repository->countSubUsers($user_id);
+    }
+    public function getSubUsers(string $user_id): array {
+        return $this->repository->getSubUsers($user_id);
+    }
+    public function deleteSubUsers(int $p_id) {
+        $this->repository->deleteSubUsers($p_id);
+    }
+
     public function getCardListByUser(string $user_id):array{
         return $this->repository->getCardListByUser($user_id);
     }
@@ -85,6 +95,11 @@ final class CardService
     public function getPaidUsers(): array
     {
         return $this->repository->getPaidUsers();
+    }
+
+    public function getAllUsers(): array
+    {
+        return $this->repository->getAllUsers();
     }
 
     public function getSubscriptionByUser(string $user_id): array

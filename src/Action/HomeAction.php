@@ -38,6 +38,15 @@ public function __invoke(
 ServerRequestInterface $request,
 ResponseInterface $response
 ): ResponseInterface {
+    $response->getBody()->write($this->twig->render('/home/index.html',
+     ));
+            return $response;
+}
+
+public function dashboard(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
     $tuser = $this->session->get('TUser');
 $allRequest = $this->cService->getLatestCardRequest();
 if ($tuser['usertype'] == 2){
@@ -54,18 +63,18 @@ $subscribed = $this->cService->countActiveSubscribers();
 $alluser =$this->uservice->countAllUser();
 $freeusers = $this->cService->countFreeUsers();
 $expsub = $this->cService->countExpiredSub();
+$countSub = $this->cService->countSubUsers($tuser['user_id']);
 $response->getBody()->write($this->twig->render('/dashboard/home.twig',
  ['cardrequest'=>$allRequest,
  'user'=>$tuser,
  'cons'=>$cons, 'card'=>$cards,'cardreq'=>$card_req,
  'customcard'=>$customcard, 'paidcard'=>$paidcard,
  'alluser'=>$alluser, 'subscribed'=>$subscribed, 'freeuser'=>$freeusers,
- 'expsub' =>$expsub
+ 'expsub' =>$expsub,
+ 'inSub' => $countSub
 ]));
         return $response;
 }
-
-
 
 public function cardRequest(
     ServerRequestInterface $request,
@@ -115,6 +124,18 @@ public function getPaidUsers(
     $response->getBody()->write($this->twig->render('/dashboard/items/paidusers.twig',
      ['user'=>$this->session->get('TUser'),
      'paidusers'=>$paidusers
+    ]));
+            return $response;
+}
+
+public function getAllUsers(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $allUsers = $this->cService->getAllUsers();
+    $response->getBody()->write($this->twig->render('/dashboard/items/allusers.twig',
+     ['user'=>$this->session->get('TUser'),
+     'allusers'=>$allUsers
     ]));
             return $response;
 }
@@ -183,11 +204,50 @@ public function getConnectionLists(
     ]));
     return $response;
 }
+
+public function getSubUsers(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $tuser = $this->session->get('TUser');
+    $subUsers = $this->cService->getSubUsers($tuser['user_id']);
+    $response->getBody()->write($this->twig->render('/dashboard/items/inSub.twig',
+     ['user'=>$this->session->get('TUser'),
+     'subUsers'=>$subUsers
+    ]));
+    return $response;
+}
+
+public function deleteSubUsers(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $pid = $args['id'];
+    $tuser = $this->session->get('TUser');
+    $this->cService->deleteSubUsers($pid);
+    $subUsers = $this->cService->getSubUsers($tuser['user_id']);
+    $response->getBody()->write($this->twig->render('/dashboard/items/inSub.twig',
+     ['user'=>$this->session->get('TUser'),
+     'subUsers'=>$subUsers
+    ]));
+    return $response;
+}
 public function login(
     ServerRequestInterface $request,
     ResponseInterface $response, array $args
 ): ResponseInterface {
     $response->getBody()->write($this->twig->render('/dashboard/login-v2.html', [
+    ]));
+            return $response;
+}
+
+
+
+public function privacy(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $response->getBody()->write($this->twig->render('/dashboard/privacy.twig', [
     ]));
             return $response;
 }
@@ -293,6 +353,17 @@ public function events(
     ]));
             return $response;
 }
+
+public function create_Ugroup(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $usergroup = $this->aService->getUserGroup($this->session->get('TUser')['user_id']);
+    $response->getBody()->write($this->twig->render('/attendance/usergroup.twig', ['user'=>$this->session->get('TUser'), 'usergroup'=>$usergroup
+    ]));
+            return $response;
+}
+
 public function createTheme(
     ServerRequestInterface $request,
     ResponseInterface $response, array $args

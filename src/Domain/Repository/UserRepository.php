@@ -40,7 +40,7 @@ class UserRepository
             'subscription' => 1,
             'status' => 0,
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-          
+            'refcode'=>$data['refcode']
         ];
         $newId = (int)$this->queryFactory->newInsert($table, $this_data)
             ->execute()
@@ -141,6 +141,49 @@ class UserRepository
         return $result;
        
     }
+
+
+    public function editProfile(array $data): array
+    {
+        $this_data = [
+            'user_id' => $data['user_id'],
+            'prefix' => isset($data['prefix']) ? $data['prefix'] : null,
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'middle_name' => isset($data['middle_name']) ? $data['middle_name'] : null,
+            'suffix' => isset($data['suffix']) ? $data['suffix'] : null,
+            'organization' => $data['organization'],
+            'photo' => isset($data['photo']) ? $data['photo'] : null,
+            'workphone' => isset($data['workphone']) ? $data['workphone'] : null,
+            'cellphone' => $data['cellphone'],
+            'title' => isset($data['title']) ? $data['title'] : null,
+            'url' => isset($data['url']) ? $data['url'] : null,
+            'note' => isset($data['note']) ? $data['note'] : null,
+            'logo' => isset($data['logo']) ? $data['logo'] : null,
+            'email' => $data['email'],
+            'workemail' => isset($data['workemail']) ? $data['workemail'] : null,
+            'role' => $data['role'],
+            'street' => $data['street'],
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'country' => $data['country'],
+            'facebook' => isset($data['facebook']) ? $data['facebook'] : null,
+            'linkedin' => isset($data['linkedin']) ? $data['linkedin'] : null,
+            'twitter' => isset($data['twitter']) ? $data['twitter'] : null,
+            'instagram' => isset($data['instagram']) ? $data['instagram'] : null,
+            'usertype' => $data['usertype'],
+            'subscription' => $data['subscription'],
+            'status' => $data['status'],
+            
+        ];
+        $this->queryFactory->newUpdate('profile')
+            ->set($this_data)
+            ->andWhere(['id' => $data['id']])
+            ->execute();
+        $result = ['description' => 'Profile Updated Successfully'];
+        return $result;
+    }
+
 
     public function addOtherProfile(array $data, string $uid): array
     {
@@ -486,7 +529,7 @@ public function countAllUser(): int
             ->set($values)
             ->andWhere(['id' => $data['userid']])
             ->execute();
-        $result = ['description' => 'Password Change Successful!'];
+        $result = ['description' => 'Password Change Successful!'. $data['password']. $data['userid']];
         return $result;
     }
 

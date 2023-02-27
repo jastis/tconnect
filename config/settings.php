@@ -25,7 +25,7 @@ $settings['error'] = [
 $settings['smtp'] = [
     // use 'null' for the null adapter
     'type' => 'smtp',
-    'host' => 'mail.trausox.com',
+    'host' => 'mail.briisi.com',
     'port' => '465',
     'username' => $config['smtp']['username'],
     'password' => $config['smtp']['password'],
@@ -49,18 +49,7 @@ $settings['security'] = [
     'serverName' => $config['security']['serverName'],
     ];
 
-$settings['cost']=[
-'customCard'=> $config['cost']['customCard'],
-'design'=> $config['cost']['design'],
-'template'=>$config['cost']['template'],
-'currency'=> $config['cost']['currency'],
-'symbol'=> $config['cost']['symbol'],
-'design'=>  $config['cost']['design'],
-    'quarterly' =>  $config['cost']['quarterly'],
-    'biannual' => $config['cost']['biannual'],
-    'yearly' =>  $config['cost']['yearly']
-    
-];
+$settings['cost']=$config['cost'];
 
 $settings['db'] = [
     'driver' => \Cake\Database\Driver\Mysql::class,

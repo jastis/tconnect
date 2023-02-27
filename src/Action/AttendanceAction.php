@@ -84,6 +84,51 @@ class AttendanceAction
         return $response->withHeader('Content-Type', 'application/json')->withStatus($result['Code']);
     }
 
+    public function addUserGroup(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $data = (array) $request->getParsedBody();
+        $uri = $request->getUri();
+        $data['user_id'] = $this->session->get('TUser')['user_id'];
+        $settings = $this->c->get('settings');
+        $directory = $settings['assets']['logopath'];
+        $uploadedFiles = $request->getUploadedFiles();
+        $result = [ 'message' => 'New Usergroup Creation Failed!', 'Code' => 500];
+        if (isset($uploadedFiles['userg'])) {
+            $uploadedFile = $uploadedFiles['userg'];
+            if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+                $basename = 'fakepath';
+                $filename = sprintf('%s.%0.8s', $basename, $extension);
+                $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+                $filename = $uri->getScheme() . '://' . $uri->getHost() . '/upload/logo/' . $filename;
+                $csvFile = fopen($filename,"r");
+ 
+            // Skip the first line
+            fgetcsv($csvFile);
+ 
+            // Parse data from CSV file line by line
+             // Parse data from CSV file line by line
+            while (($getData = fgetcsv($csvFile, 10000)) !== FALSE)
+            {
+                // Get row data
+               $data['email'] = $getData[1];
+                $data['phone'] = $getData[2];
+               $result = $this->aservices->createUserGroup($data);
+                
+            }
+ 
+           // Close opened CSV file
+            fclose($csvFile);
+            } 
+        }
+
+     
+
+        $response->getBody()->write((string) json_encode($result));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($result['Code']);
+    }
     public function addEvent(
         ServerRequestInterface $request,
         ResponseInterface $response

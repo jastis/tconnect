@@ -56,7 +56,7 @@ final class UserService
              $req_data['userid'] = $this->getToken(30);
              $result['data']= $this->repository->CreateNewUser("usertbl",$req_data);
              if($result['data']['id']>0){
-              $result['vlink'] = 'https://tkonect.trausox.com/user/activate/'.$req_data['userid'];
+              $result['vlink'] = 'https://briisi.com/user/activate/'.$req_data['userid'];
              $result['Code'] =200;
              $this->transaction->commit();
              }
@@ -167,7 +167,7 @@ final class UserService
         $issuedAt   = new DateTimeImmutable();
         $expire     = $issuedAt->modify('+5 years')->getTimestamp();      // Add 5years
         $serverName = $this->c->get('settings')['security']['serverName'];
-                                                 // Retrieved from filtered POST data
+                                                
 
         $data = [
             'iat'  => $issuedAt->getTimestamp(),         // Issued at: time when the token was generated
@@ -314,6 +314,10 @@ final class UserService
 
     public function addProfile(array $data):array{
         return $this->repository->addProfile($data);
+    }
+
+    public function editProfile(array $data):array{
+        return $this->repository->editProfile($data);
     }
 
     public function countAllProfile(): int

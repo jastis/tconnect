@@ -21,7 +21,27 @@
             <!-- /.info-box-content -->
           </div>
           <!-- /.info-box -->
-        </div></a>
+       </a> </div>
+
+       {% if inSub > 0 %}
+       <div class="col-12 col-sm-6 col-md-3">
+        <a href="/dashboard/insub" >  
+          <div class="info-box">
+           <span class="info-box-icon bg-info elevation-1"><i class="fas fa-address-card"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Subscription Used</span>
+              
+              <span class="info-box-number">
+                {{inSub |number_format(0, '.', ',')}} 
+              </span>
+            </div>
+            
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+       </a> </div>
+       {%endif%}
         <!-- /.col -->
         <div class="col-12 col-sm-6 col-md-3">
           <a href="/dashboard/connectionlists"  >  
@@ -101,6 +121,7 @@
           
             <div class="col-md-3">
               <!-- Info Boxes Style 2 -->
+              <a href="/dashboard/allusers">
               <div class="info-box mb-3 bg-warning">
                 <span class="info-box-icon"><i class="fas fa-user"></i></span>
     
@@ -110,6 +131,7 @@
                 </div>
                 <!-- /.info-box-content -->
               </div>
+              </a>
               </div>
               <div class="col-md-3">
               <!-- /.info-box -->
@@ -224,28 +246,7 @@
 {%endif%}
         
         <!-- /.col -->
-      </div>
-      <div class="modal fade" id="modal-lg">
-        <div class="modal-dialog modal-lg">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Large Modal</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>One fine body&hellip;</p>
-            </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
+      
 {% endblock %}
 
 {% block js%}

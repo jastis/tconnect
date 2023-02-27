@@ -456,6 +456,62 @@ class CardRepository
         return $result;
     }
 
+    public function getAllUsers(): array
+    {
+        $result = [];
+        $query = $this->queryFactory->newSelect('usertbl')->select(['first_name', 'last_name','email','phone_no']);
+        $rows = $query->execute()->fetchAll('assoc');
+        foreach ($rows as $row) {
+
+            $result[] = $row;
+        }
+        return $result;
+    }
+
+    public function countSubUsers(string $user_id): int
+    {
+        $$result = 0;
+        $query = $this->queryFactory->newSelect('subscription')->select(['subscription.template'])
+        ->innerJoin('themes', 'themes.id = subscription.template')
+            ->where(['subscription.user_id' => $user_id, 'subscription.status'=>1, 'themes.subscription'=>2 ]);
+        $getSubTemp = $query->execute()->fetch('assoc');
+        if ($getSubTemp){
+        $query1 = $this->queryFactory->newSelect('profile')->select(['id'])
+        ->where(['template' => $getSubTemp['template']]);
+        $rows = $query1->execute()->fetchAll('assoc');
+        $result = count($rows);
+        }
+        
+        return $result;
+    }
+
+    public function getSubUsers(string $user_id): array
+    {
+        $result = [];
+        $query = $this->queryFactory->newSelect('subscription')->select(['subscription.template'])
+        ->innerJoin('themes', 'themes.id = subscription.template')
+            ->where(['subscription.user_id' => $user_id, 'subscription.status'=>1, 'themes.subscription'=>2 ]);
+        $getSubTemp = $query->execute()->fetch('assoc');
+        if ($getSubTemp){
+        $query1 = $this->queryFactory->newSelect('profile')->select(['id','first_name', 'last_name', 'email','cellphone'])
+        ->where(['template' => $getSubTemp['template']]);
+        $rows = $query1->execute()->fetchAll('assoc');
+        foreach ($rows as $row) {
+            $result[] = $row;
+        }
+    
+        }
+        
+        return $result;
+    }
+
+public function deleteSubUsers (int $p_id){
+    $this->queryFactory->newDelete('profile')
+            ->andWhere(['id' => $p_id, ])
+            ->execute();
+}
+
+
     public function getExpiredSubscribers(): array
     {
         $this->checkSubscription();

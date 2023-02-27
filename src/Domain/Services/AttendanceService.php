@@ -52,6 +52,10 @@ final class AttendanceService
         return $this->repository->createOrg($data);
     }
 
+    public function createUserGroup(array $data):array{
+        return $this->repository->createUserGroup($data);
+    }
+
     public function createEvent(array $data):array{
         $data['event_id'] = $this->getToken(30);
        return  $this->repository->createEvent($data);
@@ -61,6 +65,9 @@ final class AttendanceService
      }
      public function getAllEvents(string $user_id):array{
         return  $this->repository->getAllEvents($user_id);
+     }
+     public function getUserGroup(string $user_id):array{
+        return  $this->repository->getUserGroup($user_id);
      }
      public function getLatestEvents(string $user_id):array{
         return  $this->repository->getLatestEvents($user_id);

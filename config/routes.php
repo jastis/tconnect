@@ -11,7 +11,8 @@ use App\Middleware\AuthHeaderMiddleware;
 
 use Slim\App;
 return function (App $app) {
-    $app->get('/', \App\Action\HomeAction::class)->add(UserAuthMiddleware::class)->setName('home'); 
+    $app->get('/', \App\Action\HomeAction::class)->setName('home'); 
+    $app->get('/teekonect', \App\Action\HomeAction::class.':dashboard')->add(UserAuthMiddleware::class)->setName('dashboard'); 
     $app->get('/login', \App\Action\HomeAction::class.':login')->setName('login');
     $app->get('/logout', \App\Action\HomeAction::class.':logout')->setName('logout');
     $app->get('/register', \App\Action\HomeAction::class.':register')->setName('register');
@@ -22,10 +23,11 @@ return function (App $app) {
     $app->get('/attendance', \App\Action\HomeAction::class.':attendance')->add(UserAuthMiddleware::class)->setName('attendance');
     $app->get('/events', \App\Action\HomeAction::class.':events')->add(UserAuthMiddleware::class)->setName('events');
     $app->get('/events/create', \App\Action\HomeAction::class.':createEvent')->add(UserAuthMiddleware::class)->setName('create_event');
+    $app->get('/events/usergroup', \App\Action\HomeAction::class.':create_Ugroup')->add(UserAuthMiddleware::class)->setName('create_usergroup');
     $app->get('/newtheme', \App\Action\HomeAction::class.':createTheme')->add(UserAuthMiddleware::class)->setName('createTheme');
     $app->get('/newtheme/{req_id}', \App\Action\HomeAction::class.':createTheme')->add(UserAuthMiddleware::class);
     $app->get('/sendmail/{user_id}/{cardname}', \App\Action\CardAction::class.':mailSender')->add(UserAuthMiddleware::class);
-
+    $app->get('/privacy', \App\Action\HomeAction::class.':privacy');
     $app->get('/cardrequests', \App\Action\HomeAction::class .':cardRequest')->add(UserAuthMiddleware::class)->setName('cardRequest');
  
     $app->group('/user', function (Group $group) {
@@ -43,6 +45,7 @@ return function (App $app) {
     $app->group('/profile', function (Group $group) {
         $group->POST('', UserAction::class .':getProfile')->add(AuthHeaderMiddleware::class);
         $group->POST('/add', UserAction::class .':addProfile')->add(AuthHeaderMiddleware::class);
+        $group->POST('/edit', UserAction::class .':editProfile')->add(AuthHeaderMiddleware::class);
         $group->POST('/add/other', UserAction::class .':addOtherProfile')->add(AuthHeaderMiddleware::class);
         $group->POST('/remove', UserAction::class .':removeProfile')->add(AuthHeaderMiddleware::class);
         $group->POST('/removeother', UserAction::class .':removeCard')->add(AuthHeaderMiddleware::class);
@@ -51,12 +54,14 @@ return function (App $app) {
     $app->group('/attendance', function (Group $group) {
         $group->POST('', AttendanceAction::class .':getProfile');
         $group->POST('/add/organization', AttendanceAction::class .':addOrganization')->add(UserAuthMiddleware::class);
+        $group->POST('/add/usergroup', AttendanceAction::class .':addUserGroup')->add(UserAuthMiddleware::class);
         $group->POST('/add/event', AttendanceAction::class .':addEvent')->add(UserAuthMiddleware::class);
         $group->POST('/add/check', CardAction::class .':checkIncheckOut');
         $group->POST('/{organization}/{start}/{end}', AttendanceAction::class .':getAttendanceByOrg')->add(UserAuthMiddleware::class);
         $group->GET('/report/all', AttendanceAction::class .':getAttendanceRange')->add(UserAuthMiddleware::class);
         $group->GET('/report/summary', AttendanceAction::class .':getAttendanceSummaryRange')->add(UserAuthMiddleware::class);
         $group->GET('/qr/{org_id}/{event}',HomeAction::class .':getQR')->add(UserAuthMiddleware::class);
+        
     });
 
 
@@ -87,10 +92,15 @@ return function (App $app) {
         $group->GET('/cardlists', HomeAction::class .':getCardLists')->add(UserAuthMiddleware::class);
         $group->GET('/connectionlists', HomeAction::class .':getConnectionLists')->add(UserAuthMiddleware::class);
         $group->GET('/paidusers', HomeAction::class .':getPaidUsers')->add(UserAuthMiddleware::class);
+        $group->GET('/allusers', HomeAction::class .':getAllUsers')->add(UserAuthMiddleware::class);
         $group->GET('/expusers', HomeAction::class .':getExpiredSubscribers')->add(UserAuthMiddleware::class);
         $group->GET('/activesubs', HomeAction::class .':getActiveSubscribers')->add(UserAuthMiddleware::class);
         $group->GET('/freeusers', HomeAction::class .':getFreeUsers')->add(UserAuthMiddleware::class);
+        $group->GET('/insub', HomeAction::class .':getSubUsers')->add(UserAuthMiddleware::class);
         $group->GET('/customcards', HomeAction::class .':getCustomCardList')->add(UserAuthMiddleware::class);
+        $group->GET('/subuser/delete/{id}', HomeAction::class .':deleteSubUsers')->add(UserAuthMiddleware::class);
+
+        
     });
     
 };

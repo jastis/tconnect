@@ -88,7 +88,7 @@ class UserAction
         if ((int) $result['data']['id'] > 0) {
             $this->SendSMS('Thank you, use this link to verify your Teekonect account. '.$result['vlink'] , ('%2B'.$data['phone_no']));
             $email = (new TemplatedEmail())
-                ->from('donotreply@trausox.com')
+                ->from('donotreply@briisi.com')
                 ->to($data['email'])
                 ->subject('Welcome to Teekonect')
 
@@ -154,6 +154,53 @@ class UserAction
         } catch (\Throwable $th) {
             $result['error']['type'] = 'Bad Request';
             $result['error']['Description'] = "Card not saved!, Fill out all required information";
+            $response->getBody()->write((string) json_encode($result));
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->withStatus(500);
+        }
+    }
+
+
+    public function editProfile(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        // $this->logger->info(sprintf('User created:'));
+        try {
+            $uri = $request->getUri();
+            $data = (array) $request->getParsedBody();
+            $settings = $this->c->get('settings');
+            $directory = $settings['assets']['logopath'];
+            $uploadedFiles = $request->getUploadedFiles();
+            $item = json_decode($data['item'], true);
+            $item["user_id"] = $data['uid'];
+            if (isset($uploadedFiles['logo'])) {
+                $uploadedFile = $uploadedFiles['logo'];
+                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                    $filename = $this->moveUploadedFile($directory, $uploadedFile);
+                    $item['logo'] = $uri->getScheme() . '://' . $uri->getHost() . '/upload/logo/' . $filename;
+                } else {
+                    $item['logo'] = null;
+                }
+            }
+            $result = $this->uservices->editProfile($item);
+            if($result){
+            $response->getBody()->write((string) json_encode($result));
+            return $response
+                ->withHeader('Content-Type', 'application/json')
+                ->withStatus(200);
+            }else{
+                $result['error']['type'] = 'Server Error';
+                $result['error']['Description'] = "Error updating Card";
+                $response->getBody()->write((string) json_encode($result));
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(500);
+            }
+        } catch (\Throwable $th) {
+            $result['error']['type'] = 'Bad Request';
+            $result['error']['Description'] = "Card not Updated!";
             $response->getBody()->write((string) json_encode($result));
             return $response
                 ->withHeader('Content-Type', 'application/json')
@@ -295,7 +342,7 @@ class UserAction
         ResponseInterface $response
     ): ResponseInterface {
         $data = (array) $request->getParsedBody();
-        $data['userid'] = (int) $this->session->get('user')['id'];
+        $data['userid'] = (int) $this->session->get('TUser')['id'];
         $result = $this->uservices->updateUserProfile($data);
         $response->getBody()->write((string) json_encode($result));
         return $response
@@ -308,7 +355,7 @@ class UserAction
         ResponseInterface $response
     ): ResponseInterface {
         $data = (array) $request->getParsedBody();
-        $data['userid'] = (isset($data['id'])) ? $data['id'] : (int) $this->session->get('user')['id'];
+        $data['userid'] = (isset($data['id'])) ? $data['id'] : (int) $this->session->get('TUser')['id'];
         $result = $this->uservices->updatePasswordById($data);
         $response->getBody()->write((string) json_encode($result));
         return $response
@@ -331,7 +378,7 @@ class UserAction
         $data['first_name'] = $result['first_name'];
         $data['code'] = $result['newPass'];
         $email = (new TemplatedEmail())
-            ->from('donotreply@tkonet.com')
+            ->from('donotreply@briisi.com')
             ->to($data['email'])
             ->subject('Password Reset')
 
