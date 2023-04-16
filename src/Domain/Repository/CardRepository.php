@@ -470,7 +470,7 @@ class CardRepository
 
     public function countSubUsers(string $user_id): int
     {
-        $$result = 0;
+        $result = 0;
         $query = $this->queryFactory->newSelect('subscription')->select(['subscription.template'])
         ->innerJoin('themes', 'themes.id = subscription.template')
             ->where(['subscription.user_id' => $user_id, 'subscription.status'=>1, 'themes.subscription'=>2 ]);
