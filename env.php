@@ -1,10 +1,17 @@
 <?php
 
-$settings['db']['host'] = 'localhost:8889';
-$settings['db']['name'] = 'briisico_teekonect_db';
-$settings['db']['username'] = 'root';
-$settings['db']['password'] = 'root';
-// $settings['db']['host'] = 'localhost:3306';
+$settings['db']['host'] = 'teekonect-app-server.mysql.database.azure.com:3306';  // --------------- azure
+$settings['db']['name'] = 'teekonect-app-database';
+$settings['db']['username'] = 'yigrwmepxr';
+$settings['db']['password'] = 'UMPX640UID2A8073$';
+
+// $settings['db']['host'] = 'localhost:8889';  // --------------- local host 
+// $settings['db']['name'] = 'briisico_teekonect_db';
+// $settings['db']['username'] = 'root';
+// $settings['db']['password'] = 'root';
+
+
+// $settings['db']['host'] = 'localhost:3306';   // ------------ shared Hosting
 // $settings['db']['name'] = 'briisico_teekonect_db';
 // $settings['db']['username'] = 'briisico_admin';
 // $settings['db']['password'] = '[gEW]tR!UcTa';
