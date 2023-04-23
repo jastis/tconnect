@@ -1,6 +1,6 @@
 <?php
 
-$settings['db']['host'] = 'teekonect-app-server.mysql.database.azure.com:3306';  // --------------- azure
+$settings['db']['host'] = 'teekonect-db.mysql.database.azure.com:3306';  // --------------- azure
 $settings['db']['name'] = 'teekonect-app-database';
 $settings['db']['username'] = 'yigrwmepxr';
 $settings['db']['password'] = 'UMPX640UID2A8073$';

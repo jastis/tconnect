@@ -78,7 +78,7 @@ $settings['db'] = [
         PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci'
     ],
     'options' => array(
-        PDO::MYSQL_ATTR_SSL_CA => dirname(__DIR__) .'/DigiCertGlobalRootCA.crt.pem',
+        PDO::MYSQL_ATTR_SSL_CA => '/home/site/wwwroot/DigiCertGlobalRootCA.crt.pem',
         PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false
     ),
 ];
