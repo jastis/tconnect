@@ -1,9 +1,11 @@
 <?php
 
-$settings['db']['host'] = 'teekonect-db.mysql.database.azure.com:3306';  // --------------- azure
-$settings['db']['name'] = 'teekonect-app-database';
-$settings['db']['username'] = 'yigrwmepxr';
-$settings['db']['password'] = 'UMPX640UID2A8073$';
+
+
+$settings['db']['host'] = getenv('AZURE_MYSQL_HOST');
+$settings['db']['name'] = getenv('AZURE_MYSQL_DBNAME');
+$settings['db']['username'] = getenv('AZURE_MYSQL_USERNAME');
+$settings['db']['password'] = getenv('AZURE_MYSQL_PASSWORD');
 
 // $settings['db']['host'] = 'localhost:8889';  // --------------- local host 
 // $settings['db']['name'] = 'briisico_teekonect_db';
