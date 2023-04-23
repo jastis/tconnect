@@ -56,5 +56,5 @@ jobs:
         with:
           app-name: 'teekonect-app'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B19037505E0A4D2FAADB487C63415E60 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ECD7A32C286C4A33BC9FB43ECE87CE27 }}
           package: .
