@@ -2,7 +2,7 @@
 
 
 
-$settings['db']['host'] = getenv('AZURE_MYSQL_HOST');
+$settings['db']['host'] = getenv('AZURE_MYSQL_HOST').':'.getenv('AZURE_MYSQL_PORT');
 $settings['db']['name'] = getenv('AZURE_MYSQL_DBNAME');
 $settings['db']['username'] = getenv('AZURE_MYSQL_USERNAME');
 $settings['db']['password'] = getenv('AZURE_MYSQL_PASSWORD');
