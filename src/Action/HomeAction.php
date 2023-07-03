@@ -242,6 +242,15 @@ public function login(
 }
 
 
+public function teekonectInfo(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $response->getBody()->write($this->twig->render('/home/teekonect.html', [
+    ]));
+            return $response;
+}
+
 
 public function privacy(
     ServerRequestInterface $request,
@@ -292,6 +301,24 @@ public function register(
     ResponseInterface $response, array $args
 ): ResponseInterface {
     $response->getBody()->write($this->twig->render('/dashboard/register-v2.html', [
+    ]));
+            return $response;
+}
+
+public function accountSearch(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $response->getBody()->write($this->twig->render('/dashboard/searchaccount.html', [
+    ]));
+            return $response;
+}
+
+public function deleteAccount(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $response->getBody()->write($this->twig->render('/dashboard/deleteaccount.html', [
     ]));
             return $response;
 }

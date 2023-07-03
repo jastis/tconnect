@@ -1,0 +1,234 @@
+<link href="/css/deleteacct.css" rel="stylesheet" type="text/css">
+<style>
+    .uncheck-all {
+        background: #7266fc;
+        color: white;
+        padding: 8px 10px;
+        border-radius: 6px;
+        font-family: 'Basier Circle';
+        font-weight: 500;
+    }
+
+    .uncheck-all:hover {
+        background: #5e50fb;
+    }
+
+    .checkbox-counter {
+        color: #7265fc;
+        margin-bottom: 5px;
+        font-family: 'Basier Circle', sans-serif;
+        font-size: 22px;
+        line-height: 26px;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+</style>
+
+
+<style>
+    #carbonads {
+        display: block;
+        overflow: hidden;
+        padding: 10px;
+        box-shadow: 0 1px 3px hsla(0, 0%, 0%, .05);
+        border-radius: 4px;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        line-height: 1.5;
+        max-width: 300px;
+        font-size: 12px;
+        background-color: #fff;
+    }
+
+    #carbonads a {
+        text-decoration: none;
+    }
+
+    #carbonads span {
+        position: relative;
+        display: block;
+        overflow: hidden;
+    }
+
+    .carbon-img {
+        float: left;
+        margin-right: 1em;
+    }
+
+    .carbon-img img {
+        display: block;
+    }
+
+    .carbon-text {
+        display: block;
+        float: left;
+        max-width: calc(100% - 130px - 1em);
+        text-align: left;
+        color: #637381;
+    }
+
+    .carbon-poweredby {
+        position: absolute;
+        left: 142px;
+        bottom: 0;
+        display: block;
+        font-size: 8px;
+        color: #c5cdd0;
+        font-weight: 500;
+        text-transform: uppercase;
+        line-height: 1;
+        letter-spacing: 1px;
+    }
+</style>
+
+
+<style>
+    /* The container */
+    .container {
+        display: block;
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /* Hide the browser's default checkbox */
+    .container input {
+        position: none;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    /* Create a custom checkbox */
+    .checkmark {
+        position: absolute;
+        top: 3px;
+        left: 0;
+        height: 19px;
+        width: 19px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        border: 1px solid #7367FC;
+    }
+
+    /* On mouse-over, add a grey background color */
+    .container:hover input~.checkmark {
+        background-color: rgba(115, 103, 252, 0.11);
+    }
+
+    /* When the checkbox is checked, add a blue background */
+    .container input:checked~.checkmark {
+        background-color: #7367FC;
+    }
+
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    /* Show the checkmark when checked */
+    .container input:checked~.checkmark:after {
+        display: block;
+    }
+
+    /* Style the checkmark/indicator */
+    .container .checkmark:after {
+        left: 6px;
+        top: 2.5px;
+        width: 3px;
+        height: 8px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+</style>
+
+</head>
+
+<body>
+    <div class="section page-header wf-section">
+        <div class="w-container">
+            <h5 class="heading---hero emoji">🗑</h5>
+            <h1 class="heading---hero">Deleting Your Account</h1>
+                        <div class="_60-width">
+                <div class="paragraph-18---grey">We understand that sometimes some users may want to have their account deleted, this is a very unusual event but 
+                    its a possibility. </br> We have provided a way for users to easily delete their account. Follow the steps below to get your account deleted.
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section checklist-related wf-section">
+        <div class="w-container">
+            <div class="checkboxes steps">
+                <h3 class="heading-3">Steps</h3>
+                <div class="_10px"></div>
+                <div class="card steps">
+                    <div class="steps-content">
+                        <div class="steps-circle">
+                            <div class="steps-number">1</div>
+                        </div>
+                        <p class="paragraph-15---black steps">Account Delete Link</p>
+                        <p class="paragraph-14">Its just very easy.<br><br>The link to delete your account is under the user profile menu. Goto User Menu on the top right corner and click on the <strong> delete account </strong><br></p>
+                    </div>
+                    <div class="steps-visual">
+                        <div class="steps-visual-image"><img
+                                src="/images/deleteaccount.png"
+                                alt="" class="image-2"></div>
+                    </div>
+                </div>
+                <div class="card steps">
+                    <div class="steps-content">
+                        <div class="steps-circle">
+                            <div class="steps-number">2</div>
+                        </div>
+                        <p class="paragraph-15---black steps">Feedback</p>
+                        <p class="paragraph-14">Kindly help us with the reason why you are choosing to delete your account  by answering some few questions<br><br>This will help us imporove our services<br></p>
+                    </div>
+                    <div class="steps-visual">
+                        <div class="steps-visual-image"><img
+                                src="/images/deletequestion.svg"
+                                alt="" class="image-2"></div>
+                    </div>
+                </div>
+                <div class="card steps">
+                    <div class="steps-content">
+                        <div class="steps-circle">
+                            <div class="steps-number">3</div>
+                        </div>
+                        <p class="paragraph-15---black steps">Result of Deleting your account</p>
+                        <p class="paragraph-14">If you delete your account, all your account information and cards created on Briisi-teekonect app will be erased completely with no backup or restore options<br><br>All your  data will be permanently deleted? and all your subscription cancelled.
+                            <br>Be sure of what you want before taking this account<br></p>
+                    </div>
+                    <div class="steps-visual">
+                        
+                    </div>
+                </div>
+                <div class="card steps">
+                    <div class="steps-content">
+                        <div class="steps-circle">
+                            <div class="steps-number">4</div>
+                        </div>
+                        <p class="paragraph-15---black steps">Confirmation</p>
+                        <p class="paragraph-14"> You will get confirmation that your account has been deleted and logged out of the app.
+                        <br></p>
+                    </div>
+                    <div class="steps-visual">
+
+                        <style>
+                            .w-container {
+                                max-width: 1100px;
+                            }
+                        </style>
+</body>
+
+</html>

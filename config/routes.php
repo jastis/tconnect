@@ -12,6 +12,7 @@ use App\Middleware\AuthHeaderMiddleware;
 use Slim\App;
 return function (App $app) {
     $app->get('/', \App\Action\HomeAction::class)->setName('home'); 
+    $app->get('/tkinfo', \App\Action\HomeAction::class.':teekonectInfo'); 
     $app->get('/teekonect', \App\Action\HomeAction::class.':dashboard')->add(UserAuthMiddleware::class)->setName('dashboard'); 
     $app->get('/login', \App\Action\HomeAction::class.':login')->setName('login');
     $app->get('/logout', \App\Action\HomeAction::class.':logout')->setName('logout');
@@ -29,6 +30,10 @@ return function (App $app) {
     $app->get('/sendmail/{user_id}/{cardname}', \App\Action\CardAction::class.':mailSender')->add(UserAuthMiddleware::class);
     $app->get('/privacy', \App\Action\HomeAction::class.':privacy');
     $app->get('/cardrequests', \App\Action\HomeAction::class .':cardRequest')->add(UserAuthMiddleware::class)->setName('cardRequest');
+    $app->get('/teekonect/getaccountstatus', \App\Action\UserAction::class.':getAccountStatus');
+    $app->get('/teekonect/delete/account', \App\Action\UserAction::class.':removeUserByUserID');
+    $app->get('/teekonect/accountstatus', \App\Action\HomeAction::class.':accountSearch'); 
+    $app->get('/teekonect/deleteaccount', \App\Action\HomeAction::class.':deleteAccount'); 
  
     $app->group('/user', function (Group $group) {
         $group->POST('/create', UserAction::class .':registerNewUser');

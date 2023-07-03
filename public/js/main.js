@@ -4,7 +4,7 @@
   // ==== darkToggler
   const darkTogglerCheckbox = document.querySelector("#darkToggler");
   const html = document.querySelector("html");
-
+ 
   const darkModeToggler = () => {
     darkTogglerCheckbox.checked
       ? html.classList.remove("a4s")

@@ -311,6 +311,17 @@ class UserRepository
         return $result;
     }
 
+    public function getAccountStatus(string $email): int
+    {
+        $result = 2;
+        
+        $query = $this->queryFactory->newSelect('usertbl')->select(['usertbl.status']) 
+        ->where(['usertbl.email' => $email]);
+        $row = $query->execute()->fetch('assoc');
+        $result = $row['status']? (int) $row['status']:2;
+        return $result;
+    }
+
     public function countAllProfileByUser(string $user_id): int
     {
         $result = 0;
@@ -345,6 +356,19 @@ class UserRepository
         //    foreach($rows as $row){
         //         $result[] = $row;
         //    }
+        return $result;
+    }
+
+    public function removeUserByUserID(string $user_id): array
+    {
+
+
+        $this->queryFactory->newDelete('usertbl')
+            ->Where(['user_id' => $user_id])
+            ->execute();
+
+        $result = ['message' => " User Account Deleted"];
+       
         return $result;
     }
 

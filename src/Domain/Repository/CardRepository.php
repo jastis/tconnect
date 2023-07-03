@@ -196,10 +196,12 @@ class CardRepository
     {
         $this->checkSubscription();
         $result = [];
-        $query = $this->queryFactory->newSelect('themes')->select(['value' => 'id', 'label' => 'name'])
+        $query = $this->queryFactory->newSelect('themes')->select(['value' => 'id', 'label' => 'name', 'sub'=>'subscription'])
             ->where(['subscription <' => 2]);
         $rows = $query->execute()->fetchAll('assoc');
         foreach ($rows as $row) {
+            $row['label'] .= '-'.($row['sub']==0?'free':'subscribe');
+            unset($row['sub']);
             $result[] = $row;
         }
         return $result;

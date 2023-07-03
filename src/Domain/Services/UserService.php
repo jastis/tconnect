@@ -104,6 +104,10 @@ final class UserService
         return $this->repository->removeProfile($user_id,  $cid);
         }
 
+        public function removeUserByUserID(string $user_id):array{
+            return $this->repository->removeUserByUserID($user_id);
+            }
+    
         
 
         public function removeCard(array $data):array{
@@ -293,6 +297,11 @@ final class UserService
     public function getActiveUsers():array{
         return $this->repository->getActiveUsers();
     }
+
+    public function getAccountStatus(string $email):int {
+        return $this->repository->getAccountStatus($email);
+    }
+
     public function enableUser(int $user_id):void{
          $this->repository->enableUser($user_id);
     }

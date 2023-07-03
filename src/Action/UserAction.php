@@ -297,6 +297,34 @@ class UserAction
             ->withStatus(200);
     }
 
+    public function removeUserByUserID(
+        ServerRequestInterface $request,
+        ResponseInterface $response,
+        array $args
+    ): ResponseInterface {
+        $result = $this->uservices->removeUserByUserID($this->session->get('TUser')['user_id']);
+        $response->getBody()->write((string) json_encode($result));
+        if ($this->session->get('TUser')) {
+            $this->session->destroy();
+        }
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus(200);
+    }
+
+    public function getAccountStatus(
+        ServerRequestInterface $request,
+        ResponseInterface $response
+    ): ResponseInterface {
+        $data = (array) $request->getQueryParams();
+        $result = $this->uservices->getAccountStatus($data['email']);
+        $result = $result === 1? "Account Active": ($result === 0?"Account Not Active": "Account Not Found");
+        $response->getBody()->write((string) json_encode($result));
+        return $response
+            ->withHeader('Content-Type', 'application/json')
+            ->withStatus(200);
+    }
+
 
     public function getProfile(
         ServerRequestInterface $request,
