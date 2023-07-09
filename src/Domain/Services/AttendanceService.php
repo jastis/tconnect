@@ -48,7 +48,7 @@ final class AttendanceService
      */
     
     public function createOrg(array $data):array{
-        $data['org_id'] = $this->getToken(20);
+        $data['org_id'] = $this->getToken(10);
         return $this->repository->createOrg($data);
     }
 
