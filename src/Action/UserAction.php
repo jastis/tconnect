@@ -86,7 +86,7 @@ class UserAction
             }
         }
         $result = $this->uservices->createNewUser($data);
-        $result['vlink'] = $uri->getScheme() . '://' . $uri->getHost() .$uri->getPort().'/user/activate/'.$result['vlink'];
+        $result['vlink'] = $uri->getScheme() . '://' . $uri->getHost() .'/user/activate/'.$result['vlink'];
         if ((int) $result['data']['id'] > 0) {
            $smsSent = $this->SendSMS('Thank you, use this link to verify your Teekonect account. '.$result['vlink'] , ('%2B'.$data['phone_no']));//
            $result['smsStatus'] = $smsSent; 
