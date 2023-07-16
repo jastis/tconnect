@@ -59,6 +59,7 @@ class UserAction
         ResponseInterface $response
     ): ResponseInterface {
         // $this->logger->info(sprintf('User created:'));
+        $uri = $request->getUri();
         $data = (array) $request->getParsedBody();
         $settings = $this->c->get('settings');
         $directory = $settings['assets']['photopath'];
@@ -85,9 +86,11 @@ class UserAction
             }
         }
         $result = $this->uservices->createNewUser($data);
+        $result['vlink'] = $uri->getScheme() . '://' . $uri->getHost() .$uri->getPort().'/user/activate/'.$result['vlink'];
         if ((int) $result['data']['id'] > 0) {
-            $this->SendSMS('Thank you, use this link to verify your Teekonect account. '.$result['vlink'] , ('%2B'.$data['phone_no']));
-            $email = (new TemplatedEmail())
+           $smsSent = $this->SendSMS('Thank you, use this link to verify your Teekonect account. '.$result['vlink'] , ('%2B'.$data['phone_no']));//
+           $result['smsStatus'] = $smsSent; 
+           $email = (new TemplatedEmail())
                 ->from('donotreply@briisi.com')
                 ->to($data['email'])
                 ->subject('Welcome to Teekonect')
@@ -468,7 +471,7 @@ class UserAction
             ->withStatus($result['statusCode']);
     }
 
-    public function SendSMS(string $msg = 'testing from app', $to): void {
+    public function SendSMS(string $msg = 'testing from app', $to): string {
         $settings = $this->c->get('settings');
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -488,7 +491,7 @@ class UserAction
         ));
         $response = curl_exec($curl);
         curl_close($curl);
-      
+      return $response;
     }
 
     

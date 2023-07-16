@@ -56,7 +56,7 @@ final class UserService
              $req_data['userid'] = $this->getToken(30);
              $result['data']= $this->repository->CreateNewUser("usertbl",$req_data);
              if($result['data']['id']>0){
-              $result['vlink'] = 'https://briisi.com/user/activate/'.$req_data['userid'];
+              $result['vlink'] = $req_data['userid'];
              $result['Code'] =200;
              $this->transaction->commit();
              }
