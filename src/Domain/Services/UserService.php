@@ -290,6 +290,10 @@ final class UserService
     { return $this->repository->getUserByUserId($user_id);
     }
 
+    public function getUserPicByUserId(string $user_id): array
+    { return $this->repository->getUserPicByUserId($user_id);
+    }
+
     public function getUserById(int $id):array{
         return $this->repository->getUserById($id);
     }

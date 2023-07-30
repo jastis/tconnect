@@ -12,6 +12,7 @@ use App\Middleware\AuthHeaderMiddleware;
 use Slim\App;
 return function (App $app) {
     $app->get('/', \App\Action\HomeAction::class)->setName('home'); 
+    $app->get('/profile_request/{user_id}/{pro_id}', \App\Action\HomeAction::class.':profileRequest');
     $app->get('/tkinfo', \App\Action\HomeAction::class.':teekonectInfo'); 
     $app->get('/teekonect', \App\Action\HomeAction::class.':dashboard')->add(UserAuthMiddleware::class)->setName('dashboard'); 
     $app->get('/login', \App\Action\HomeAction::class.':login')->setName('login');

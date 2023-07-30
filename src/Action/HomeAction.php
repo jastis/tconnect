@@ -85,6 +85,18 @@ public function cardRequest(
             return $response;
 }
 
+public function profileRequest(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+
+    $user = $this->uservice->getUserById($args['pro_id']);
+    $user_pic = $this->uservice->getUserPicByUserId($args['user_id']);
+    $response->getBody()->write($this->twig->render('/home/profile.html', ['pro_user'=>$user, 'pics'=>$user_pic['profilepicture']
+    ]));
+            return $response;
+}
+
 public function allRequest(
     ServerRequestInterface $request,
     ResponseInterface $response, array $args

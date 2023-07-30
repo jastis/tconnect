@@ -40,7 +40,7 @@ class UserRepository
             'subscription' => 1,
             'status' => 0,
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-            'refcode'=>$data['refcode']
+            'refcode' => $data['refcode']
         ];
         $newId = (int)$this->queryFactory->newInsert($table, $this_data)
             ->execute()
@@ -96,50 +96,49 @@ class UserRepository
 
         $max_user = 0;
         $cur_card = 0;
-        if ($rowtheme['subscription'] == 0){ // free
+        if ($rowtheme['subscription'] == 0) { // free
             $max_user = 1;
-        $querypro = $this->queryFactory->newSelect('profile');
-        $querypro->select(['cards' => $querypro->func()->count('id')])
-        ->andWhere(['template' => $data['template'], 'user_id' => $data['user_id']]);
-        $rowpro = $querypro->execute()->fetch('assoc');
-        $cur_card = $rowpro['cards'];
-        }else if ($rowtheme['subscription'] == 1){ //paid
-        $querysub = $this->queryFactory->newSelect('subscription')->select(['max_user'])
-            ->andWhere(['template' => $data['template'], 'user_id' => $data['user_id']]);
-        $rowsub = $querysub->execute()->fetch('assoc');
-        $max_user =  (int) $rowsub['max_user'];
-        
-        $querypro = $this->queryFactory->newSelect('profile');
-        $querypro->select(['cards' => $querypro->func()->count('id')])
-        ->andWhere(['template' => $data['template'], 'user_id' => $data['user_id']]);
-        $rowpro = $querypro->execute()->fetch('assoc');
-        $cur_card = $rowpro['cards'];
-        }else if ($rowtheme['subscription'] == 2){ // custom
+            $querypro = $this->queryFactory->newSelect('profile');
+            $querypro->select(['cards' => $querypro->func()->count('id')])
+                ->andWhere(['template' => $data['template'], 'user_id' => $data['user_id']]);
+            $rowpro = $querypro->execute()->fetch('assoc');
+            $cur_card = $rowpro['cards'];
+        } else if ($rowtheme['subscription'] == 1) { //paid
             $querysub = $this->queryFactory->newSelect('subscription')->select(['max_user'])
-            ->andWhere(['template' => $data['template']]);
-        $rowsub = $querysub->execute()->fetch('assoc');
-        $max_user =  (int) $rowsub['max_user'];
-        
-        $querypro = $this->queryFactory->newSelect('profile');
-        $querypro->select(['cards' => $querypro->func()->count('id')])
-        ->andWhere(['template' => $data['template'] ]);
-        $rowpro = $querypro->execute()->fetch('assoc');
-        $cur_card = (int) $rowpro['cards'];
+                ->andWhere(['template' => $data['template'], 'user_id' => $data['user_id']]);
+            $rowsub = $querysub->execute()->fetch('assoc');
+            $max_user =  (int) $rowsub['max_user'];
+
+            $querypro = $this->queryFactory->newSelect('profile');
+            $querypro->select(['cards' => $querypro->func()->count('id')])
+                ->andWhere(['template' => $data['template'], 'user_id' => $data['user_id']]);
+            $rowpro = $querypro->execute()->fetch('assoc');
+            $cur_card = $rowpro['cards'];
+        } else if ($rowtheme['subscription'] == 2) { // custom
+            $querysub = $this->queryFactory->newSelect('subscription')->select(['max_user'])
+                ->andWhere(['template' => $data['template']]);
+            $rowsub = $querysub->execute()->fetch('assoc');
+            $max_user =  (int) $rowsub['max_user'];
+
+            $querypro = $this->queryFactory->newSelect('profile');
+            $querypro->select(['cards' => $querypro->func()->count('id')])
+                ->andWhere(['template' => $data['template']]);
+            $rowpro = $querypro->execute()->fetch('assoc');
+            $cur_card = (int) $rowpro['cards'];
         }
 
-        if ( $cur_card < $max_user){
-        $newId = (int)$this->queryFactory->newInsert("profile", $this_data)
-        ->execute()
-        ->lastInsertId();
-        $query = $this->queryFactory->newSelect('profile')->select(['profile.*','temptheme'=>'themes.theme'])
-        ->innerjoin('themes', 'themes.id = profile.template')
-        ->where(['profile.id' => $newId]);
-        $row = $query->execute()->fetch('assoc');
-        $result = $row ? $row : $result;
-        $result['temptheme'] =$row ?json_decode($row['temptheme'],true,JSON_UNESCAPED_SLASHES): [];
-         } 
+        if ($cur_card < $max_user) {
+            $newId = (int)$this->queryFactory->newInsert("profile", $this_data)
+                ->execute()
+                ->lastInsertId();
+            $query = $this->queryFactory->newSelect('profile')->select(['profile.*', 'temptheme' => 'themes.theme'])
+                ->innerjoin('themes', 'themes.id = profile.template')
+                ->where(['profile.id' => $newId]);
+            $row = $query->execute()->fetch('assoc');
+            $result = $row ? $row : $result;
+            $result['temptheme'] = $row ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : [];
+        }
         return $result;
-       
     }
 
 
@@ -174,7 +173,7 @@ class UserRepository
             'usertype' => $data['usertype'],
             'subscription' => $data['subscription'],
             'status' => $data['status'],
-            
+
         ];
         $this->queryFactory->newUpdate('profile')
             ->set($this_data)
@@ -187,57 +186,57 @@ class UserRepository
 
     public function addOtherProfile(array $data, string $uid): array
     {
-        $found = true; 
+        $found = true;
         $template = 0;
         $query = $this->queryFactory->newSelect('cards')->select('*')->where(['user_id' => $uid, 'from_user' => $data[0], 'pro_id' => (int)$data[1]]);
         $row = $query->execute()->fetch('assoc');
         if (!$row) {
-           $found = false;
+            $found = false;
         }
 
         $query = $this->queryFactory->newSelect('profile')->select('*')->where(['user_id' => $data[0], 'id' => $data[1]]);
         $row = $query->execute()->fetch('assoc');
         $result = $row ? $row : [];
-        if ($result){
+        if ($result) {
             $template = $row['template'];
-            if(!$found){
-            $values = [
-                'user_id' => $uid,
-                'from_user' => $data[0],
-                'pro_id' => $data[1]
-            ];
-            $newId = (int)$this->queryFactory->newInsert("cards", $values)
-                ->execute()
-                ->lastInsertId();
-        }
-            $query = $this->queryFactory->newSelect('themes')->select(['subscription'])->where(['id'=>$template]);
+            if (!$found) {
+                $values = [
+                    'user_id' => $uid,
+                    'from_user' => $data[0],
+                    'pro_id' => $data[1]
+                ];
+                $newId = (int)$this->queryFactory->newInsert("cards", $values)
+                    ->execute()
+                    ->lastInsertId();
+            }
+            $query = $this->queryFactory->newSelect('themes')->select(['subscription'])->where(['id' => $template]);
             $rowsub = $query->execute()->fetch('assoc');
 
             $sub_status = $rowsub['subscription'];
-            if($sub_status == 1){
+            if ($sub_status == 1) {
                 $query = $this->queryFactory->newSelect('subscription')->select(['id'])
-                ->where(['user_id'=>$data[0],'template'=>$template, 'status'=> 1 ]);
-                $chksub = $query->execute()->fetch('assoc');   
-                if(!$chksub){
+                    ->where(['user_id' => $data[0], 'template' => $template, 'status' => 1]);
+                $chksub = $query->execute()->fetch('assoc');
+                if (!$chksub) {
                     $result['subscribe'] = false;
                     return $result;
-                   }
-            }else if($sub_status == 2){
+                }
+            } else if ($sub_status == 2) {
                 $query = $this->queryFactory->newSelect('subscription')->select(['id'])
-                ->where(['template'=>$template, 'status'=> 1 ]);
-                $chksub = $query->execute()->fetch('assoc');   
-                if(!$chksub){
+                    ->where(['template' => $template, 'status' => 1]);
+                $chksub = $query->execute()->fetch('assoc');
+                if (!$chksub) {
                     $result['subscribe'] = false;
                     return $result;
-                   }
+                }
             }
-            
-            $query = $this->queryFactory->newSelect('themes')->select(['theme'])->where(['id'=>$row['template']]);
+
+            $query = $this->queryFactory->newSelect('themes')->select(['theme'])->where(['id' => $row['template']]);
             $rowtheme = $query->execute()->fetch('assoc');
-            $result['temptheme'] =$rowtheme ?json_decode($rowtheme['theme'],true,JSON_UNESCAPED_SLASHES): [];
-        if($result['temptheme']){
-            $result['subscribe'] = true;
-        }
+            $result['temptheme'] = $rowtheme ? json_decode($rowtheme['theme'], true, JSON_UNESCAPED_SLASHES) : [];
+            if ($result['temptheme']) {
+                $result['subscribe'] = true;
+            }
         }
         return $result;
     }
@@ -245,12 +244,12 @@ class UserRepository
     public function getProfile(string $user_id): array
     {
         $result = [];
-        $query = $this->queryFactory->newSelect('profile')->select(['profile.*','temptheme'=>'themes.theme'])
-        ->innerjoin('themes', 'themes.id = profile.template')
-        ->where(['user_id' => $user_id]);
+        $query = $this->queryFactory->newSelect('profile')->select(['profile.*', 'temptheme' => 'themes.theme'])
+            ->innerjoin('themes', 'themes.id = profile.template')
+            ->where(['user_id' => $user_id]);
         $rows = $query->execute()->fetchAll('assoc');
         foreach ($rows as $row) {
-            $row['temptheme'] =  $row['temptheme']? json_decode($row['temptheme'],true,JSON_UNESCAPED_SLASHES):null;
+            $row['temptheme'] =  $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
             $result[] = $row;
         }
         $pros = [0];
@@ -260,13 +259,13 @@ class UserRepository
         foreach ($rows as $row) {
             array_push($pros, $row['pro_id']);
         }
-        $query = $this->queryFactory->newSelect('profile')->select(['profile.*','usertbl.token', 'temptheme'=>'themes.theme'])
-        ->innerjoin('usertbl', 'usertbl.user_id = profile.user_id')
-        ->innerjoin('themes', 'themes.id = profile.template')
-        ->where(['profile.id IN' => $pros]);
+        $query = $this->queryFactory->newSelect('profile')->select(['profile.*', 'usertbl.token', 'temptheme' => 'themes.theme'])
+            ->innerjoin('usertbl', 'usertbl.user_id = profile.user_id')
+            ->innerjoin('themes', 'themes.id = profile.template')
+            ->where(['profile.id IN' => $pros]);
         $rows = $query->execute()->fetchAll('assoc');
         foreach ($rows as $row) {
-            $row['temptheme'] =  $row['temptheme']? json_decode($row['temptheme'],true,JSON_UNESCAPED_SLASHES):null;
+            $row['temptheme'] =  $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
             $result[] = $row;
         }
         return $result;
@@ -274,12 +273,12 @@ class UserRepository
     public function getAllProfile(string $user_id): array
     {
         $result = [];
-        $query = $this->queryFactory->newSelect('profile')->select(['profile.*','temptheme'=>'themes.theme'])
-        ->innerjoin('themes', 'themes.id = profile.template')
-        ->where(['user_id' => $user_id]);
+        $query = $this->queryFactory->newSelect('profile')->select(['profile.*', 'temptheme' => 'themes.theme'])
+            ->innerjoin('themes', 'themes.id = profile.template')
+            ->where(['user_id' => $user_id]);
         $rows = $query->execute()->fetchAll('assoc');
         foreach ($rows as $row) {
-            $row['temptheme'] =  $row['temptheme']? json_decode($row['temptheme'],true,JSON_UNESCAPED_SLASHES):null;
+            $row['temptheme'] =  $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
             $result[] = $row;
         }
 
@@ -290,13 +289,13 @@ class UserRepository
         foreach ($rows as $row) {
             array_push($pros, $row['pro_id']);
         }
-        $query = $this->queryFactory->newSelect('profile')->select(['profile.*','usertbl.token','temptheme'=>'themes.theme'])
-        ->innerjoin('usertbl', 'usertbl.user_id = profile.user_id')
-        ->innerjoin('themes', 'themes.id = profile.template')
-        ->where(['profile.id IN' => $pros]);
+        $query = $this->queryFactory->newSelect('profile')->select(['profile.*', 'usertbl.token', 'temptheme' => 'themes.theme'])
+            ->innerjoin('usertbl', 'usertbl.user_id = profile.user_id')
+            ->innerjoin('themes', 'themes.id = profile.template')
+            ->where(['profile.id IN' => $pros]);
         $rows = $query->execute()->fetchAll('assoc');
         foreach ($rows as $row) {
-            $row['temptheme'] =  $row['temptheme']? json_decode($row['temptheme'],true,JSON_UNESCAPED_SLASHES):null;
+            $row['temptheme'] =  $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
             $result[] = $row;
         }
         return $result;
@@ -305,7 +304,7 @@ class UserRepository
     public function countAllProfile(): int
     {
         $result = 0;
-        $query = $this->queryFactory->newSelect('profile')->select(['profile.id']) ;   
+        $query = $this->queryFactory->newSelect('profile')->select(['profile.id']);
         $rows = $query->execute()->fetchAll('assoc');
         $result = count($rows);
         return $result;
@@ -314,11 +313,11 @@ class UserRepository
     public function getAccountStatus(string $email): int
     {
         $result = 2;
-        
-        $query = $this->queryFactory->newSelect('usertbl')->select(['usertbl.status']) 
-        ->where(['usertbl.email' => $email]);
+
+        $query = $this->queryFactory->newSelect('usertbl')->select(['usertbl.status'])
+            ->where(['usertbl.email' => $email]);
         $row = $query->execute()->fetch('assoc');
-        $result = $row['status']? (int) $row['status']:2;
+        $result = $row['status'] ? (int) $row['status'] : 2;
         return $result;
     }
 
@@ -326,8 +325,8 @@ class UserRepository
     {
         $result = 0;
         $query = $this->queryFactory->newSelect('profile')->select(['profile.id'])
-        ->innerjoin('themes', 'themes.id = profile.template')
-        ->where(['user_id' => $user_id]);
+            ->innerjoin('themes', 'themes.id = profile.template')
+            ->where(['user_id' => $user_id]);
         $rows = $query->execute()->fetchAll('assoc');
         $result = count($rows);
         return $result;
@@ -368,7 +367,7 @@ class UserRepository
             ->execute();
 
         $result = ['message' => " User Account Deleted"];
-       
+
         return $result;
     }
 
@@ -412,28 +411,27 @@ class UserRepository
             ->Where(['OR' => [['email' => $data['email']], ['phone_no' => $data['email']]]]);
         $rows = $query->execute()->fetch('assoc');
         if ($rows) {
-            if($rows['status']== 1){
-            $hashpass = $rows['password'];
-            $user = $rows;
-            if (password_verify($data['password'], $hashpass)) {
-                unset($user['password']);
-                $result = ['user' => $user, 'found' => true];
-                return $result;
+            if ($rows['status'] == 1) {
+                $hashpass = $rows['password'];
+                $user = $rows;
+                if (password_verify($data['password'], $hashpass)) {
+                    unset($user['password']);
+                    $result = ['user' => $user, 'found' => true];
+                    return $result;
+                } else {
+                    $result = [
+                        'found' => false,
+                        'message' => 'Incorrect Password!'
+                    ];
+                    return $result;
+                }
             } else {
                 $result = [
                     'found' => false,
-                    'message' => 'Incorrect Password!'
+                    'message' => 'Account not Activated'
                 ];
                 return $result;
             }
-        }
-        else{
-            $result = [
-                'found' => false,
-                'message' => 'Account not Activated'
-            ];
-            return $result;
-        }
         }
         $result = [
             'found' => false,
@@ -455,47 +453,45 @@ class UserRepository
             ->Where(['OR' => [['email' => $data['email']], ['phone_no' => $data['email']]]]);
         $row = $query->execute()->fetch('assoc');
         if ($row) {
-            if($row['status']== 1){
-            $hashpass = $row['password'];
-            $user = $row;
-            $user['pushToken'] = $data['pushTokens'];
-            if (password_verify($data['password'], $hashpass)) {
-                //unset($user['password']);
-                $result = ['user' => $user, 'found' => true];
-                $loginToken = [ 'token' => $data['pushTokens']];
-                $this->queryFactory->newUpdate('usertbl')
-                ->set($loginToken)
-                ->andWhere(['OR' => [['email' => $data['email']], ['phone_no' => $data['email']]]])
-                ->execute();
-                return $result;
+            if ($row['status'] == 1) {
+                $hashpass = $row['password'];
+                $user = $row;
+                $user['pushToken'] = $data['pushTokens'];
+                if (password_verify($data['password'], $hashpass)) {
+                    //unset($user['password']);
+                    $result = ['user' => $user, 'found' => true];
+                    $loginToken = ['token' => $data['pushTokens']];
+                    $this->queryFactory->newUpdate('usertbl')
+                        ->set($loginToken)
+                        ->andWhere(['OR' => [['email' => $data['email']], ['phone_no' => $data['email']]]])
+                        ->execute();
+                    return $result;
+                } else {
+                    $result = [
+                        'found' => false,
+                        'message' => 'Incorrect Password!'
+                    ];
+                    return $result;
+                }
             } else {
                 $result = [
                     'found' => false,
-                    'message' => 'Incorrect Password!'
+                    'message' => 'Account not Activated!'
                 ];
                 return $result;
             }
-        }else{
-            $result = [
-                'found' => false,
-                'message' => 'Account not Activated!'
-            ];
-            return $result; 
-        }
         }
         $result = [
             'found' => false,
             'message' => 'Incorrect Email!'
         ];
         return $result;
-
-
     }
 
-public function countAllUser(): int
+    public function countAllUser(): int
     {
         $result = 0;
-       
+
         $query = $this->queryFactory->newSelect('usertbl')
             ->select('id');
         $rows = $query->execute()->fetchall('assoc');
@@ -505,15 +501,15 @@ public function countAllUser(): int
     public function countSubscribed(): int
     {
         $result = 0;
-       
+
         $query = $this->queryFactory->newSelect('usertbl')
-            ->select('id')->where(['subscription'=>1]);
+            ->select('id')->where(['subscription' => 1]);
         $rows = $query->execute()->fetchall('assoc');
         $result = count($rows);
         return $result;
     }
 
-    
+
 
     public function resetPasswordByMail(array $data): array
     {
@@ -553,7 +549,7 @@ public function countAllUser(): int
             ->set($values)
             ->andWhere(['id' => $data['userid']])
             ->execute();
-        $result = ['description' => 'Password Change Successful!'. $data['password']. $data['userid']];
+        $result = ['description' => 'Password Change Successful!' . $data['password'] . $data['userid']];
         return $result;
     }
 
@@ -631,7 +627,7 @@ public function countAllUser(): int
         $result = [];
         if ($row) {
             if ((int) $row['status'] > 0) {
-                $result = ['code'=>200, 'message' => 'Your account has already been verified!'];
+                $result = ['code' => 200, 'message' => 'Your account has already been verified!'];
             } else {
                 $values = [
                     'status' => 1,
@@ -640,10 +636,10 @@ public function countAllUser(): int
                     ->set($values)
                     ->andWhere(['user_id' => $userid])
                     ->execute();
-                $result = ['code'=>200, 'message' => 'Your account has been verified successfully!'];
+                $result = ['code' => 200, 'message' => 'Your account has been verified successfully!'];
             }
         } else {
-            $result = ['code'=>500,'message' => 'Invalid account verification Code!'];
+            $result = ['code' => 500, 'message' => 'Invalid account verification Code!'];
         }
         return $result;
     }
@@ -677,6 +673,15 @@ public function countAllUser(): int
     {
         $query = $this->queryFactory->newSelect('usertbl')
             ->select('*')
+            ->Where(['user_id' => $user_id]);
+        $row = $query->execute()->fetch('assoc');
+        return $row;
+    }
+
+    public function getUserPicByUserId(string $user_id): array
+    {
+        $query = $this->queryFactory->newSelect('usertbl')
+            ->select('profilepicture')
             ->Where(['user_id' => $user_id]);
         $row = $query->execute()->fetch('assoc');
         return $row;
@@ -716,6 +721,4 @@ public function countAllUser(): int
         }
         return $result;
     }
-
-    
 }

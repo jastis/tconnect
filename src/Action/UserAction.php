@@ -269,7 +269,7 @@ class UserAction
             } else{
         
             $result['error']['type'] = 'Server Error';
-            $result['error']['Description'] = "Sharing Failed!  Subscription is pending on this card";
+            $result['error']['Description'] = "Sharing Failed!  Subscription may be pending on this card";
             $response->getBody()->write((string) json_encode($result));
             return $response
                 ->withHeader('Content-Type', 'application/json')
