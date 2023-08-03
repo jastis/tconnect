@@ -523,3 +523,21 @@
 .lnr-pointer-left:before {
 	content: "\e8a9";
 }
+
+.floating-button-div {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+  }
+  
+  
+  .fb {
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	padding: 20px;
+	font-size: 16px;
+	cursor: pointer;
+	box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+  }
