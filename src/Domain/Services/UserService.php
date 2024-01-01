@@ -329,6 +329,10 @@ final class UserService
         return $this->repository->addProfile($data);
     }
 
+    public function getUserTrends():array{
+        return $this->repository->getUserTrends();
+    }
+
     public function editProfile(array $data):array{
         return $this->repository->editProfile($data);
     }
@@ -337,6 +341,7 @@ final class UserService
     {
         return $this->repository->countAllProfile();
     }
+
 
     public function countAllProfileByUser(string $user_id): int
     {

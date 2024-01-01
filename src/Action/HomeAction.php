@@ -64,6 +64,10 @@ $alluser =$this->uservice->countAllUser();
 $freeusers = $this->cService->countFreeUsers();
 $expsub = $this->cService->countExpiredSub();
 $countSub = $this->cService->countSubUsers($tuser['user_id']);
+$atPreview = $this->aService->getAttendancePreview($tuser['user_id']);
+$atRating = $this->aService->getAttendanceRating($tuser['user_id']);
+$atTrends = $this->aService->getAttendanceTrends($tuser['user_id']);
+$usTrends = $this->uservice->getUserTrends();
 $response->getBody()->write($this->twig->render('/dashboard/home.twig',
  ['cardrequest'=>$allRequest,
  'user'=>$tuser,
@@ -71,7 +75,11 @@ $response->getBody()->write($this->twig->render('/dashboard/home.twig',
  'customcard'=>$customcard, 'paidcard'=>$paidcard,
  'alluser'=>$alluser, 'subscribed'=>$subscribed, 'freeuser'=>$freeusers,
  'expsub' =>$expsub,
- 'inSub' => $countSub
+ 'inSub' => $countSub,
+ 'atprev' =>$atPreview,
+ 'atRating' =>$atRating,
+ 'atTrends'=>$atTrends ,
+ 'usTrends' =>$usTrends
 ]));
         return $response;
 }
@@ -269,6 +277,14 @@ public function privacy(
     ResponseInterface $response, array $args
 ): ResponseInterface {
     $response->getBody()->write($this->twig->render('/dashboard/privacy.twig', [
+    ]));
+            return $response;
+}
+public function faq(
+    ServerRequestInterface $request,
+    ResponseInterface $response, array $args
+): ResponseInterface {
+    $response->getBody()->write($this->twig->render('/dashboard/faq.html', [
     ]));
             return $response;
 }

@@ -2,113 +2,103 @@
 
 {% block content %}
   
-      <div class="row">
-        
-        
-        <div class="col-12 col-sm-6 col-md-3">
-        <a href="/dashboard/cardlists" >  
-          <div class="info-box">
-           <span class="info-box-icon bg-info elevation-1"><i class="fas fa-address-card"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Cards</span>
-              
-              <span class="info-box-number">
-                {{card |number_format(0, '.', ',')}} 
-              </span>
+  <div class="row">
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box ">
+              <div class="inner">
+                <h3> {{card |number_format(0, '.', ',')}} </h3>
+                <p>Cards</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-address-card"  style="color:green"></i>
+              </div>
+              <a href="/dashboard/cardlists" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            
-            <!-- /.info-box-content -->
           </div>
-          <!-- /.info-box -->
-       </a> </div>
+          <!-- ./col -->
+           {% if inSub > 0 %}
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box ">
+              <div class="inner">
+                <h3> {{inSub |number_format(0, '.', ',')}}</h3>
 
-       {% if inSub > 0 %}
-       <div class="col-12 col-sm-6 col-md-3">
-        <a href="/dashboard/insub" >  
-          <div class="info-box">
-           <span class="info-box-icon bg-info elevation-1"><i class="fas fa-address-card"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Subscription Used</span>
-              
-              <span class="info-box-number">
-                {{inSub |number_format(0, '.', ',')}} 
-              </span>
+                <p>Subscription Used</p>
+              </div>
+              <div class="icon">
+               <i class="fas fa-money"></i>
+              </div>
+              <a href="/dashboard/insub" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            
-            <!-- /.info-box-content -->
           </div>
-          <!-- /.info-box -->
-       </a> </div>
-       {%endif%}
-        <!-- /.col -->
-        <div class="col-12 col-sm-6 col-md-3">
-          <a href="/dashboard/connectionlists"  >  
-          <div class="info-box mb-3">
-            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-link"></i></span>
+          {%endif%}
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box -warning">
+              <div class="inner">
+                <h3>{{cons|number_format(0, '.', ',')}}</h3>
 
-            <div class="info-box-content">
-              <span class="info-box-text">Conenctions</span>
-              <span class="info-box-number">{{cons|number_format(0, '.', ',')}}</span>
+                <p>Conenctions</p>
+              </div>
+              <div class="icon">
+              
+               <i class="fas fa-link" style="color:green"></i>
+              </div>
+              <a href="/dashboard/connectionlists" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <!-- /.info-box-content -->
-          </div></a>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
+          </div>
+          <!-- ./col -->
+              {% if user.usertype == 2 %}
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box -danger">
+              <div class="inner">
+                <h3>{{cardreq|number_format(0, '.', ',')}}</h3>
 
-        <!-- fix for small devices only -->
-        <div class="clearfix hidden-md-up"></div>
-
-        {% if user.usertype == 2 %}
-        <div class="col-12 col-sm-6 col-md-3">
-          <a href="/dashboard/allrequest" >
-          <div class="info-box mb-3">
-            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-layer-group"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Card Request</span>
-              <span class="info-box-number">{{cardreq|number_format(0, '.', ',')}}</span>
+                <p>Card Request</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-layer-group"  style="color:green"></i>
+              </div>
+              <a href="/dashboard/allrequest" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <!-- /.info-box-content -->
-          </div></a>
-          <!-- /.info-box -->
-        </div>
-        <div class="col-12 col-sm-6 col-md-3">
-          <a href="/dashboard/customcards"  >
-          <div class="info-box mb-3">
-            <span class="info-box-icon bg-success elevation-1"><i class="fas fa-edit"></i></span>
+          </div>
+          <!-- ./col -->
 
-            <div class="info-box-content">
-              <span class="info-box-text">Custom Templates</span>
-              <span class="info-box-number">{{customcard|number_format(0, '.', ',')}}</span>
+           <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box -warning">
+              <div class="inner">
+                <h3>{{customcard|number_format(0, '.', ',')}}</h3>
+
+                <p>Custom Templates</p>
+              </div>
+              <div class="icon">
+               <i class="fas fa-edit"  style="color:green"></i>
+              </div>
+              <a href="/dashboard/customcards" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <!-- /.info-box-content -->
-          </div></a>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-12 col-sm-6 col-md-3">
-          <a href="/dashboard/paidusers">
-          <div class="info-box mb-3">
-            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box -success">
+              <div class="inner">
+                <h3>{{paidcard|number_format(0, '.', ',')}}</h3>
 
-            <div class="info-box-content">
-              <span class="info-box-text">Paid Users</span>
-              <span class="info-box-number">{{paidcard|number_format(0, '.', ',')}}</span>
+                <p>Paid Users</p>
+              </div>
+              <div class="icon">
+                 <i class="fas fa-users"  style="color:green"></i>
+              </div>
+              <a href="/dashboard/paidusers" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-            <!-- /.info-box-content -->
-          </div></a>
-          <!-- /.info-box -->
+          </div>
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-
-
-      <!-- Main row -->
-      <div class="row">
+        
+        <div class="row">
         <!-- Left col -->
         <div class="col-md-12">
           <!-- MAP & BOX PANE -->
@@ -122,8 +112,8 @@
             <div class="col-md-3">
               <!-- Info Boxes Style 2 -->
               <a href="/dashboard/allusers">
-              <div class="info-box mb-3 bg-warning">
-                <span class="info-box-icon"><i class="fas fa-user"></i></span>
+              <div class="info-box mb-3 -warning">
+                <span class="info-box-icon"><i class="fas fa-user"  style="color:green"></i></span>
     
                 <div class="info-box-content">
                   <span class="info-box-text">Total Users</span>
@@ -136,8 +126,8 @@
               <div class="col-md-3">
               <!-- /.info-box -->
               <a href="/dashboard/activesubs">
-              <div class="info-box mb-3 bg-success">
-                <span class="info-box-icon"><i class="fas fa-money-bill-alt"></i></span>
+              <div class="info-box mb-3 -success">
+                <span class="info-box-icon"><i class="fas fa-money-bill-alt"  style="color:green"></i></span>
     
                 <div class="info-box-content">
                   <span class="info-box-text">Active Subscriptions</span>
@@ -150,8 +140,8 @@
             <div class="col-md-3">
               <!-- /.info-box -->
               <a href="/dashboard/expusers">
-              <div class="info-box mb-3 bg-danger">
-                <span class="info-box-icon"><i class="fas fa-times-circle"></i></span>
+              <div class="info-box mb-3 -danger">
+                <span class="info-box-icon"><i class="fas fa-times-circle"  style="color:green"></i></span>
     
                 <div class="info-box-content">
                   <span class="info-box-text">Expired Subscriptions</span>
@@ -163,8 +153,8 @@
             <div class="col-md-3">
               <!-- /.info-box -->
               <a href="/dashboard/freeusers">
-                <div class="info-box mb-3 bg-info">
-                <span class="info-box-icon"><i class="fas fa-users"></i></span>
+                <div class="info-box mb-3 -info">
+                <span class="info-box-icon"><i class="fas fa-users"  style="color:green"></i></span>
     
                 <div class="info-box-content">
                   <span class="info-box-text">Free Template Users</span>
@@ -174,11 +164,314 @@
               </div>
               </a>
             </div>
+{% endif  %}
+
+           <div class="col-md-3">
+              <!-- /.info-box -->
+              <a href="/dashboard/freeusers">
+                <div class="info-box mb-3 -info">
+                <span class="info-box-icon"><i class="fas fa-users"  style="color:green"></i></span>
+    
+                <div class="info-box-content">
+                  <span class="info-box-text">Attendance FAR</span>
+                  <span class="info-box-number">0</span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              </a>
+            </div>
             <div class="col-md-3">
+              <!-- /.info-box -->
+              <a href="/dashboard/freeusers">
+                <div class="info-box mb-3 -info">
+                <span class="info-box-icon"><i class="fas fa-users"  style="color:green"></i></span>
+    
+                <div class="info-box-content">
+                  <span class="info-box-text">Attendance FRR</span>
+                  <span class="info-box-number">0</span>
+                </div>
+                <!-- /.info-box-content -->
+              </div>
+              </a>
             </div>
           </div>
-          <!-- /.row -->
 
+        <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">Monthly Performance Report</h5>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                      <i class="fas fa-wrench"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right" role="menu" style="">
+                      <a href="#" class="dropdown-item">Action</a>
+                      <a href="#" class="dropdown-item">Another action</a>
+                      <a href="#" class="dropdown-item">Something else here</a>
+                      <a class="dropdown-divider"></a>
+                      <a href="#" class="dropdown-item">Separated link</a>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body" style="display: block;">
+                <div class="row">
+                  <div class="col-md-8">
+                    
+
+                    <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                      <!-- Sales Chart Canvas -->
+                      <canvas id="areaChart" height="360" style="height: 180px; display: block; width: 741px;" width="1482" class="chartjs-render-monitor"></canvas>
+                    </div>
+                    <!-- /.chart-responsive -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-md-4">
+                   <div class="card">
+              <div class="card-header">
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="chart-responsive"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+<canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 532px;" width="1064" height="500" class="chartjs-render-monitor"></canvas>                    </div>
+                    <!-- ./chart-responsive -->
+                  </div>
+                  <!-- /.col -->
+                 
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-body -->
+             
+            
+              <!-- /.footer -->
+            </div>
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- ./card-body -->
+              <div class="card-footer" style="display: block;">
+                <div class="row">
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block border-right">
+                      <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
+                      <h5 class="description-header">35,210.43</h5>
+                      <span class="description-text">TOTAL REVENUE</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block border-right">
+                      <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
+                      <h5 class="description-header">{{card|number_format(0, '.', ',')}}</h5>
+                      <span class="description-text">TOTAL CARDS</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block border-right">
+                      <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
+                      <h5 class="description-header">{{subscribed |number_format(0, '.', ',')}}</h5>
+                      <span class="description-text">TOTAL Subscription</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                  <!-- /.col -->
+                  <div class="col-sm-3 col-6">
+                    <div class="description-block">
+                      <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
+                      <h5 class="description-header">{{expsub|number_format(0, '.', ',')}}</h5>
+                      <span class="description-text">Expired Subscription</span>
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.card-footer -->
+            </div>
+            <!-- /.card -->
+          </div>
+     <div class="row">
+          <div class="col-lg-12">
+           
+            <!-- /.card -->
+
+            <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Attendance</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-tool btn-sm">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-striped table-valign-middle">
+                  <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Organization</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {% if (atprev | length) > 0 %}
+                  {% for data in atprev %}
+                  <tr>
+                    <td>
+                      <img src="/dist/img/default-150x150.png" alt="Product 1" class="img-circle img-size-32 mr-2">
+                   {{data.first_name}} {{data.last_name}}
+                    </td>
+                    <td> <small class="text-success mr-1">
+                        <i class="fas fa-arrow-down"></i>
+                    {{data.time_in}}
+                      </small></td>
+                    <td>
+                      <small class="text-success mr-1">
+                        <i class="fas fa-arrow-up"></i>
+                        {{data.time_out}}
+                      </small>
+                     
+                    </td>
+                    <td>
+                      <a href="#" class="text-muted">
+                    {{   data.name}}
+                      </a>
+                    </td>
+                  </tr>
+  {% endfor %}
+  {% else %}
+  <tr><td>
+               <div class="alert alert-info alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h5><i class="icon fas fa-info"></i> Attendance Record</h5>
+                No Attendance record for today!
+                </div>
+</td>
+                </tr>
+                {% endif %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col-md-6 -->
+          <div class="col-lg-3">
+           
+            <!-- /.card -->
+
+            <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Punctuality Rating</h3>
+                <div class="card-tools">
+                  <a href="#" class="btn btn-sm btn-tool">
+                    <i class="fas fa-download"></i>
+                  </a>
+                  <a href="#" class="btn btn-sm btn-tool">
+                    <i class="fas fa-bars"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="card-body">
+              {% if atRating[0].total_hours > 0  %}
+                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                   <img src="/images/gold_badge.png" alt="badge" class="img-circle img-size-32 mr-2">
+                  <p class="d-flex flex-column text-right">
+                    <span class="font-weight-bold">
+                      <i class="ion ion-android-arrow-up text-success"></i>{{atRating[0].total_hours}} hrs
+                    </span>
+                    <span class="text-muted">{{atRating[0].first_name}} {{atRating[0].last_name}} </span>
+                  </p>
+                </div>
+                {% endif %}
+                <!-- /.d-flex -->
+                 {% if atRating[1].total_hours > 0  %}
+                <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+                  <img src="/images/silver_badge.png" alt="badge" class="img-circle img-size-32 mr-2">
+                  <p class="d-flex flex-column text-right">
+                    <span class="font-weight-bold">
+                      <i class="ion ion-android-arrow-up text-warning"></i>{{atRating[1].total_hours}} hrs
+                    </span>
+                    <span class="text-muted">{{atRating[1].first_name}} {{atRating[1].last_name}} </span>
+                  </p>
+                </div>
+                {% endif %}
+                <!-- /.d-flex -->
+                 {% if atRating[2].total_hours > 0  %}
+                <div class="d-flex justify-content-between align-items-center mb-0">
+                   <img src="/images/bronze_badge.png" alt="badge" class="img-circle img-size-32 mr-2">
+                  <p class="d-flex flex-column text-right">
+                    <span class="font-weight-bold">
+                      <i class="ion ion-android-arrow-down text-danger"></i>{{atRating[2].total_hours}} hrs
+                    </span>
+                    <span class="text-muted">{{atRating[2].first_name}} {{atRating[2].last_name}} </span>
+                  </p>
+                </div>
+                {% endif %}
+                <!-- /.d-flex -->
+              </div>
+            </div>
+          </div>
+          <div class="col-md-9">
+            <!-- LINE CHART -->
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Attendance Trend</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                  <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 532px;" width="1064" height="500" class="chartjs-render-monitor"></canvas>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+           
+        
+
+          </div>
+          <!-- /.col-md-6 -->
+        </div>
+         {% if user.usertype == 2 %}
           <!-- TABLE: LATEST ORDERS -->
           <div class="card">
             <div class="card-header border-transparent">
@@ -243,6 +536,7 @@
           <!-- /.card -->
         </div>
         <!-- /.col -->
+
 {%endif%}
         
         <!-- /.col -->
@@ -251,4 +545,151 @@
 
 {% block js%}
 <script src="/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+
+<script>
+
+  $(function () {
+   
+ var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
+
+    var areaChartData = {
+      labels  : JSON.parse("{{usTrends.Months|json_encode()|escape('js')}}"),
+      datasets: [
+        {
+          label               : 'New User',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : JSON.parse("{{atTrends.users|json_encode()|escape('js')}}")
+        },
+        
+      ]
+    }
+
+    var areaChartOptions = {
+      maintainAspectRatio : false,
+      responsive : true,
+      legend: {
+        display: true
+      },
+      scales: {
+        xAxes: [{
+          gridLines : {
+            display : false,
+          }
+        }],
+        yAxes: [{
+          gridLines : {
+            display : true,
+          }
+        }]
+      }
+    }
+
+    // This will get the first returned node in the jQuery collection.
+    new Chart(areaChartCanvas, {
+      type: 'line',
+      data: areaChartData,
+      options: areaChartOptions
+    })
+
+
+    //-------------
+    //- LINE CHART -
+    //--------------
+     var lineChartData = {
+      labels  : JSON.parse("{{atTrends.days|json_encode()|escape('js')}}"),
+      datasets: [
+        {
+          label               : 'Total Hours',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : JSON.parse("{{atTrends.hours|json_encode()|escape('js')}}")
+        },
+        {
+          label               : 'No of Users',
+          backgroundColor     : 'rgba(210, 214, 222, 1)',
+          borderColor         : 'rgba(210, 214, 222, 1)',
+          pointRadius         : false,
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : JSON.parse("{{atTrends.users|json_encode()|escape('js')}}")
+        },
+      ]
+    }
+    var lineChartOptions = {
+      maintainAspectRatio : false,
+      responsive : true,
+      legend: {
+        display: true
+      },
+      scales: {
+        xAxes: [{
+          gridLines : {
+            display : false,
+          }
+        }],
+        yAxes: [{
+          gridLines : {
+            display : true,
+          }
+        }]
+      }
+    }
+    var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
+    var lineChartOptions = $.extend(true, {}, lineChartOptions)
+    var lineChartData = $.extend(true, {}, lineChartData)
+    lineChartData.datasets[0].fill = false;
+    lineChartData.datasets[1].fill = false;
+    lineChartOptions.datasetFill = false
+
+    var lineChart = new Chart(lineChartCanvas, {
+      type: 'line',
+      data: lineChartData,
+      options: lineChartOptions
+    })
+
+    //-------------
+    //- DONUT CHART -
+    //-------------
+    // Get context with jQuery - using jQuery's .get() method.
+    var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+    var donutData        = {
+      labels: [
+          'Total Users',
+          'Paid Users',
+      ],
+      datasets: [
+        {
+          data: [{{alluser}},{{paidcard}}],
+          backgroundColor : ['#f56954', '#00a65a'],
+        }
+      ]
+    }
+    var donutOptions     = {
+      maintainAspectRatio : false,
+      responsive : true,
+    }
+    //Create pie or douhnut chart
+    // You can switch between pie and douhnut using the method below.
+    new Chart(donutChartCanvas, {
+      type: 'doughnut',
+      data: donutData,
+      options: donutOptions
+    })
+  })
+   
+
+</script>
 {%endblock%}

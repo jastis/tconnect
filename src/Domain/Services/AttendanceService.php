@@ -79,6 +79,15 @@ final class AttendanceService
     public function getAttendanceRange(array $data):array{
         return $this->repository->getAttendanceRange($data);
     }
+    public function getAttendanceTrends(string $data):array{
+        return $this->repository->getAttendanceTrends($data);
+    }
+    public function getAttendanceRating(string $data):array{
+        return $this->repository->getAttendanceRating($data);
+    }
+    public function getAttendancePreview(string $data):array{
+        return $this->repository->getAttendancePreview($data);
+    }
 
      public function getTemplateWithToken(string $token):array{
         return $this->repository->getTemplateWithToken($token);

@@ -30,6 +30,7 @@ return function (App $app) {
     $app->get('/newtheme/{req_id}', \App\Action\HomeAction::class.':createTheme')->add(UserAuthMiddleware::class);
     $app->get('/sendmail/{user_id}/{cardname}', \App\Action\CardAction::class.':mailSender')->add(UserAuthMiddleware::class);
     $app->get('/privacy', \App\Action\HomeAction::class.':privacy');
+    $app->get('/faq', \App\Action\HomeAction::class.':faq');
     $app->get('/cardrequests', \App\Action\HomeAction::class .':cardRequest')->add(UserAuthMiddleware::class)->setName('cardRequest');
     $app->get('/teekonect/getaccountstatus', \App\Action\UserAction::class.':getAccountStatus');
     $app->get('/teekonect/delete/account', \App\Action\UserAction::class.':removeUserByUserID');

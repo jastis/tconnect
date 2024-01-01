@@ -263,7 +263,7 @@ class AttendanceRepo
                         $result = ['id' => -1, 'message' => 'You have closed your attendance transaction for today. Thanks',  'event' => $rowEvent['event_name'], 'Code' => 200];
                     }
                 } else {
-                    $result = ['id' => -1, 'message' =>  count($rowUserG) . 'You have Checked-In today. To checkout, please press the exit icon on the top right corner (turn red) and scan again. Thanks ', 'event' => $rowEvent['event_name'], 'Code' => 500];
+                    $result = ['id' => -1, 'message' => 'You have Checked-In today. To checkout, please press the exit icon on the top right corner (turn red) and scan again. Thanks ', 'event' => $rowEvent['event_name'], 'Code' => 500];
                 }
             } else {
                 $result = ['id' => -1, 'message' => 'You are outside the Authorized checking area', 'event' => $rowEvent['event_name'], 'Code' => 500];
@@ -280,6 +280,34 @@ class AttendanceRepo
         return $result;
     }
 
+    public function getOrgs(string $userid):array
+    {
+        $result = [];
+        $query = $this->queryFactory->newSelect('organization')->select(['org_id']);
+         $query->andWhere(['organization.user_id' => $userid ]);
+        $rows = $query->execute()->fetchAll('assoc');
+        foreach ($rows as $row) {
+            $result[] = $row['org_id'];
+        }
+        return $result;
+    }
+
+    public function getAttendancePreview(string $userid): array
+    {
+        $result = [];
+        $orgs = $this->getOrgs($userid);
+        $query = $this->queryFactory->newSelect('attendance')->select(['attendance.*', 'usertbl.first_name', 'usertbl.last_name','organization.name'])
+            ->innerjoin('usertbl', 'usertbl.user_id = attendance.user')
+            ->innerjoin('organization', 'organization.org_id = attendance.org_id');    
+        $query->andWhere(['attendance.org_id IN' => $orgs, 'date(attendance.time_in)' => date('Y-m-d')]);
+        $rows = $query->execute()->fetchAll('assoc');
+        foreach ($rows as $row) {
+            $result[] = $row;
+        }
+        return $result;
+    }
+
+
     public function getAttendanceRange(array $data): array
     {
         $result = [];
@@ -292,12 +320,59 @@ class AttendanceRepo
         }
         return $result;
     }
+
+   
+    public function getAttendanceRating(string $userid): array
+    {
+
+        $result = [];
+        $orgs = $this->getOrgs($userid);
+        $dt = date('Y-m-d');
+       $start_date =  date("Y-m-01", strtotime($dt));
+       $end_date   =  date("Y-m-t", strtotime($dt)); 
+        
+        $query = $this->queryFactory->newSelect('attendance');
+        $query->select(['total_hours' => $query->func()->sum('attendance.total_hour'), 'first_name'=>'ANY_VALUE(usertbl.first_name)', 'last_name'=>'ANY_VALUE(usertbl.last_name)'])
+            ->innerjoin('usertbl', 'usertbl.user_id = attendance.user');
+        $query->andWhere([ 'attendance.org_id IN' => $orgs, $query->newExpr()->between('attendance.time_in', $start_date, $end_date),]);
+        $query->group(['usertbl.user_id']);
+        $query->order('total_hours','DESC')->limit(3);
+        $rows = $query->execute()->fetchAll('assoc');
+        foreach ($rows as $row) {
+            $result[] = $row;
+        }
+        return $result;
+    }
+
+    public function getAttendanceTrends(string $userid): array
+    {
+
+        $result = [];
+        $orgs = $this->getOrgs($userid);
+        $dt = date('Y-m-d');
+        $firstDayOfYear = mktime(0, 0, 0, 1, 1, date("2022"));
+       $start_date =  date("Y-m-d", $firstDayOfYear);;
+       $end_date   =  date("Y-m-t", strtotime($dt)); 
+        
+        $query = $this->queryFactory->newSelect('attendance');
+        $query->select(['total_hours' => $query->func()->sum('attendance.total_hour'), 'atDay'=>'date(attendance.time_in)','total_user'=>$query->func()->count('attendance.user') ]);
+        $query->andWhere([ 'attendance.org_id IN' => $orgs, $query->newExpr()->between('attendance.time_in', $start_date, $end_date),]);
+        $query->group(['atDay']);
+        $rows = $query->execute()->fetchAll('assoc');
+        foreach ($rows as $row) {
+            $result['hours'][] =$row['total_hours'];
+            $result['days'][] =$row['atDay'];
+            $result['users'][] =$row['total_user'];
+        }
+        return $result;
+    }
+
     public function getAttendanceSummaryRange(array $data): array
     {
 
         $result = [];
         $query = $this->queryFactory->newSelect('attendance');
-        $query->select(['total_hours' => $query->func()->sum('attendance.total_hour'), 'usertbl.first_name', 'usertbl.last_name'])
+        $query->select(['total_hours' => $query->func()->sum('attendance.total_hour'),'first_name'=>'ANY_VALUE(usertbl.first_name)', 'last_name'=>'ANY_VALUE(usertbl.last_name)'])
             ->innerjoin('usertbl', 'usertbl.user_id = attendance.user');
         $query->andWhere(['attendance.event_id' => $data['event_id'] ? $data['event_id'] : 0, 'attendance.org_id' => $data['org_id'] ? $data['org_id'] : 0, $query->newExpr()->between('attendance.time_in', $data['start_date'], $data['end_date']),]);
         $query->group(['usertbl.user_id']);

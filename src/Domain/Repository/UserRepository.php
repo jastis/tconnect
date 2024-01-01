@@ -498,6 +498,29 @@ class UserRepository
         $result = count($rows);
         return $result;
     }
+
+    public function getUserTrends(): array
+    {
+
+        $result = [];
+        $dt = date('Y-m-d');
+        $firstDayOfYear = mktime(0, 0, 0, 1, 1, date("2022"));
+       $start_date =  date("Y-m-d", $firstDayOfYear);;
+       $end_date   =  date("Y-m-t", strtotime($dt)); 
+        
+        $query = $this->queryFactory->newSelect('usertbl');
+        $query->select(['total_users' => $query->func()->count('id'), 'atMonth'=>'MONTH(created)' ,'atYear'=>'Year(created)' ]);
+        $query->andWhere([$query->newExpr()->between('created', $start_date, $end_date),]);
+        $query->group(['atYear','atMonth']);
+        $rows = $query->execute()->fetchAll('assoc');
+        foreach ($rows as $row) {
+            $result['Months'][] =$row['atMonth'].'-'.$row['atYear'];
+            $result['users'][] =$row['total_user'];
+        }
+        return $result;
+    }
+
+
     public function countSubscribed(): int
     {
         $result = 0;

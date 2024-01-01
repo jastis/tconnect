@@ -6,7 +6,7 @@
   <title>Teekonect  | Dashboard </title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+ <link href="https://fonts.googleapis.com/css2?family=Khand:wght@300;400;500;600;700&display=fallback" rel="stylesheet">
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
   <!-- overlayScrollbars -->
@@ -16,8 +16,26 @@
   <link rel="stylesheet" href="/plugins/ekko-lightbox/ekko-lightbox.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+  <style>
+  .small-box > .small-box-footer {
+  background-color: rgb(60 107 2);
+  color: rgba(255, 255, 255, 0.8);
+  display: block;
+  padding: 3px 0;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  z-index: 10;
+  }
+  .small-box > .small-box-footer:hover {
+  background-color: rgba(60, 200, 0, 0.4);
+  color: #fff;
+}
+
+  </style>
+  
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed sidebar-collapse">
+<body  class="hold-transition sidebar-mini text-sm  layout-navbar-fixed ">
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -36,7 +54,7 @@
         <a href="/" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
+        <a href="/faq" class="nav-link">FAQ</a>
       </li>
     </ul>
 
@@ -156,7 +174,7 @@
         </div>
       </div>
 
-      <!-- SidebarSearch Form -->
+      {# <!-- SidebarSearch Form -->
       <div class="form-inline">
         <div class="input-group" data-widget="sidebar-search">
           <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
@@ -166,16 +184,15 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> #}
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item">
+        <ul  class="nav nav-pills nav-sidebar flex-column nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
+        
+          <li class="nav-item menu-is-opening menu-open">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-home"></i>
               <p>
                 Dashboard
                 <i class="right fas fa-angle-left"></i>
@@ -183,22 +200,22 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/teekonect" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                <a href="/teekonect" class="nav-link ">
+                  <i class="fas fa-tachometer-alt nav-icon"></i>
                   <p>Dashboard v1</p>
                 </a>
               </li>
             </ul>
           </li>
-          <li class="nav-item">
+          <li class="nav-item menu-is-opening menu-open">
             <a href="/organization" class="nav-link">
               <i class="fas fa-building nav-icon"></i>
               <p>Organization</p>
             </a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item menu-is-opening menu-open">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon far fa-calendar"></i>
               <p>
                 Event
                 <i class="right fas fa-angle-left"></i>
@@ -207,7 +224,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="/events/create" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fa fa-calendar-check nav-icon"></i>
                   <p>Create Event</p>
                 </a>
               </li>
@@ -215,7 +232,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="/events" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-calendar nav-icon"></i>
                   <p>View Events</p>
                 </a>
               </li>
@@ -223,14 +240,14 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="/events/usergroup" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fa fa-users nav-icon"></i>
                   <p>Allowed User Group</p>
                 </a>
               </li>
             </ul>
           </li>
           
-          <li class="nav-item">
+          <li class="nav-item menu-is-opening menu-open">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
@@ -241,13 +258,13 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="/attendance/report/all" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-list-alt nav-icon"></i>
                   <p>Event General Report</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/attendance/report/summary" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-table nav-icon"></i>
                   <p>Event Summary Report</p>
                 </a>
               </li>
@@ -255,14 +272,14 @@
             </ul>
           </li>
           {% if user.usertype == '2' %}
-          <li class="nav-item">
+          <li class="nav-item menu-is-opening menu-open ">
             <a href="/newtheme" class="nav-link">
               <i class="fas fa-brush nav-icon"></i>
               <p>New Theme</p>
             </a>
           </li>
           {%endif%}
-          <li class="nav-item">
+          <li class="nav-item menu-is-opening menu-open">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cog"></i>
               <p>
@@ -296,10 +313,7 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Teekonect Dashboard</h1>
-          </div><!-- /.col -->
-          
+         
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
@@ -435,6 +449,8 @@
       
     })
   </script>
+
+
 
 {% block js %}
 

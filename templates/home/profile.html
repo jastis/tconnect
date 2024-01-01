@@ -148,7 +148,7 @@
 
 
       // Without helper methods
-      var myContact = vCard.create(vCard.Version.FOUR)
+      var myContact = vCard.create(vCard.Version.THREE)
       myContact.add(vCard.Entry.NAME, "{{pro_user.first_name}};{{pro_user.last_name}};;")
       myContact.add(vCard.Entry.FORMATTEDNAME, "{{pro_user.first_name}} {{pro_user.last_name}}")
       myContact.add(vCard.Entry.NICKNAME, "")
@@ -161,7 +161,7 @@
       myContact.add(vCard.Entry.ADDRESS, ";;{{pro_user.street}};{{pro_user.city}};{{pro_user.state}};;{{pro_user.country}}", vCard.Type.HOME)
       myContact.add(vCard.Entry.URL, "{{pro_user.url}}")
 
-      var link = vCard.export(myContact, "{{pro_user.first_name}} {{pro_user.last_name}}", false) // use parameter true to force download
+      var link = vCard.export(myContact, "{{pro_user.first_name}} {{pro_user.last_name}}", true) // use parameter true to force download
       // document.body.appendChild(link)
 
 
