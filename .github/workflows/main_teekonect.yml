@@ -14,16 +14,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3 # Updated to v3
 
-      - name: Setup PHP
+      - name: Setup PHP 8.2
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.2' # Updated to PHP 8.2
 
       - name: Check if composer.json exists
         id: check_files
-        uses: andstor/file-existence-action@v1
+        uses: andstor/file-existence-action@v2 # Updated to v2
         with:
           files: 'composer.json'
 
@@ -32,10 +32,10 @@ jobs:
         run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3 # Updated to v3
         with:
           name: php-app
-          path: .
+          path: . # Upload all files
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,9 +46,10 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3 # Updated to v3
         with:
           name: php-app
+          path: .
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
