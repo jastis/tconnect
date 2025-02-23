@@ -42,7 +42,7 @@ class UserRepository
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
             'refcode' => $data['refcode']
         ];
-        $newId = (int)$this->queryFactory->newInsert($table, $this_data)
+        $newId = (int) $this->queryFactory->newInsert($table, $this_data)
             ->execute()
             ->lastInsertId();
 
@@ -71,6 +71,8 @@ class UserRepository
             'url' => isset($data['url']) ? $data['url'] : null,
             'note' => isset($data['note']) ? $data['note'] : null,
             'logo' => isset($data['logo']) ? $data['logo'] : null,
+            'back_image' => isset($data['back_image']) ? $data['back_image'] : null,
+            'front_image' => isset($data['front_image']) ? $data['front_image'] : null,
             'email' => $data['email'],
             'workemail' => isset($data['workemail']) ? $data['workemail'] : null,
             'role' => $data['role'],
@@ -86,7 +88,7 @@ class UserRepository
             'usertype' => 1, //$data['usertype'],
             'subscription' => 0, //$data['subscription'],
             'status' => 1, //$data['status'],
-            'template' => (int)$data['template']
+            'template' => (int) $data['template']
 
         ];
 
@@ -97,7 +99,7 @@ class UserRepository
         $max_user = 0;
         $cur_card = 0;
         if ($rowtheme['subscription'] == 0) { // free
-            $max_user = 1;
+            $max_user = ($data['title'] === 'ext1' || $data['title'] === 'ext') ? 1000 : 1;
             $querypro = $this->queryFactory->newSelect('profile');
             $querypro->select(['cards' => $querypro->func()->count('id')])
                 ->andWhere(['template' => $data['template'], 'user_id' => $data['user_id']]);
@@ -107,7 +109,7 @@ class UserRepository
             $querysub = $this->queryFactory->newSelect('subscription')->select(['max_user'])
                 ->andWhere(['template' => $data['template'], 'user_id' => $data['user_id']]);
             $rowsub = $querysub->execute()->fetch('assoc');
-            $max_user =  (int) $rowsub['max_user'];
+            $max_user = (int) $rowsub['max_user'];
 
             $querypro = $this->queryFactory->newSelect('profile');
             $querypro->select(['cards' => $querypro->func()->count('id')])
@@ -118,7 +120,7 @@ class UserRepository
             $querysub = $this->queryFactory->newSelect('subscription')->select(['max_user'])
                 ->andWhere(['template' => $data['template']]);
             $rowsub = $querysub->execute()->fetch('assoc');
-            $max_user =  (int) $rowsub['max_user'];
+            $max_user = (int) $rowsub['max_user'];
 
             $querypro = $this->queryFactory->newSelect('profile');
             $querypro->select(['cards' => $querypro->func()->count('id')])
@@ -128,7 +130,7 @@ class UserRepository
         }
 
         if ($cur_card < $max_user) {
-            $newId = (int)$this->queryFactory->newInsert("profile", $this_data)
+            $newId = (int) $this->queryFactory->newInsert("profile", $this_data)
                 ->execute()
                 ->lastInsertId();
             $query = $this->queryFactory->newSelect('profile')->select(['profile.*', 'temptheme' => 'themes.theme'])
@@ -140,6 +142,7 @@ class UserRepository
         }
         return $result;
     }
+
 
 
     public function editProfile(array $data): array
@@ -188,7 +191,7 @@ class UserRepository
     {
         $found = true;
         $template = 0;
-        $query = $this->queryFactory->newSelect('cards')->select('*')->where(['user_id' => $uid, 'from_user' => $data[0], 'pro_id' => (int)$data[1]]);
+        $query = $this->queryFactory->newSelect('cards')->select('*')->where(['user_id' => $uid, 'from_user' => $data[0], 'pro_id' => (int) $data[1]]);
         $row = $query->execute()->fetch('assoc');
         if (!$row) {
             $found = false;
@@ -205,7 +208,7 @@ class UserRepository
                     'from_user' => $data[0],
                     'pro_id' => $data[1]
                 ];
-                $newId = (int)$this->queryFactory->newInsert("cards", $values)
+                $newId = (int) $this->queryFactory->newInsert("cards", $values)
                     ->execute()
                     ->lastInsertId();
             }
@@ -249,7 +252,7 @@ class UserRepository
             ->where(['user_id' => $user_id]);
         $rows = $query->execute()->fetchAll('assoc');
         foreach ($rows as $row) {
-            $row['temptheme'] =  $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
+            $row['temptheme'] = $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
             $result[] = $row;
         }
         $pros = [0];
@@ -265,7 +268,7 @@ class UserRepository
             ->where(['profile.id IN' => $pros]);
         $rows = $query->execute()->fetchAll('assoc');
         foreach ($rows as $row) {
-            $row['temptheme'] =  $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
+            $row['temptheme'] = $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
             $result[] = $row;
         }
         return $result;
@@ -278,7 +281,7 @@ class UserRepository
             ->where(['user_id' => $user_id]);
         $rows = $query->execute()->fetchAll('assoc');
         foreach ($rows as $row) {
-            $row['temptheme'] =  $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
+            $row['temptheme'] = $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
             $result[] = $row;
         }
 
@@ -295,7 +298,7 @@ class UserRepository
             ->where(['profile.id IN' => $pros]);
         $rows = $query->execute()->fetchAll('assoc');
         foreach ($rows as $row) {
-            $row['temptheme'] =  $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
+            $row['temptheme'] = $row['temptheme'] ? json_decode($row['temptheme'], true, JSON_UNESCAPED_SLASHES) : null;
             $result[] = $row;
         }
         return $result;
@@ -505,17 +508,18 @@ class UserRepository
         $result = [];
         $dt = date('Y-m-d');
         $firstDayOfYear = mktime(0, 0, 0, 1, 1, date("2022"));
-       $start_date =  date("Y-m-d", $firstDayOfYear);;
-       $end_date   =  date("Y-m-t", strtotime($dt)); 
-        
+        $start_date = date("Y-m-d", $firstDayOfYear);
+        ;
+        $end_date = date("Y-m-t", strtotime($dt));
+
         $query = $this->queryFactory->newSelect('usertbl');
-        $query->select(['total_users' => $query->func()->count('id'), 'atMonth'=>'MONTH(created)' ,'atYear'=>'Year(created)' ]);
+        $query->select(['total_users' => $query->func()->count('id'), 'atMonth' => 'MONTH(created)', 'atYear' => 'Year(created)']);
         $query->andWhere([$query->newExpr()->between('created', $start_date, $end_date),]);
-        $query->group(['atYear','atMonth']);
+        $query->group(['atYear', 'atMonth']);
         $rows = $query->execute()->fetchAll('assoc');
         foreach ($rows as $row) {
-            $result['Months'][] =$row['atMonth'].'-'.$row['atYear'];
-            $result['users'][] =$row['total_user'];
+            $result['Months'][] = $row['atMonth'] . '-' . $row['atYear'];
+            $result['users'][] = $row['total_user'];
         }
         return $result;
     }
@@ -543,7 +547,7 @@ class UserRepository
         if (count($rows) > 0) {
             $tempPass = bin2hex(random_bytes(5));
             $values = [
-                'password' =>  password_hash($tempPass, PASSWORD_DEFAULT),
+                'password' => password_hash($tempPass, PASSWORD_DEFAULT),
             ];
             $this->queryFactory->newUpdate('usertbl')
                 ->set($values)
@@ -566,7 +570,7 @@ class UserRepository
     public function updatePasswordById(array $data): array
     {
         $values = [
-            'password' =>  password_hash($data['password'], PASSWORD_DEFAULT),
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
         ];
         $this->queryFactory->newUpdate('usertbl')
             ->set($values)
@@ -728,9 +732,25 @@ class UserRepository
     {
         $query = $this->queryFactory->newSelect('profile')
             ->select([
-                'profile.id', 'profile.first_name', 'profile.last_name', 'profile.email', 'profile.dob', 'profile.cellphone',
-                'profile.address', 'city' => 'cities.name', 'state' => 'states.name', 'profile.zipcode', 'profile.password', 'profile.tin', 'profile.date_of_inc',
-                'profile.user_type', 'country' => 'countries.name', 'profile.company_name', 'location' => 'profile.seller_loc', 'profile.level', 'profile.status'
+                'profile.id',
+                'profile.first_name',
+                'profile.last_name',
+                'profile.email',
+                'profile.dob',
+                'profile.cellphone',
+                'profile.address',
+                'city' => 'cities.name',
+                'state' => 'states.name',
+                'profile.zipcode',
+                'profile.password',
+                'profile.tin',
+                'profile.date_of_inc',
+                'profile.user_type',
+                'country' => 'countries.name',
+                'profile.company_name',
+                'location' => 'profile.seller_loc',
+                'profile.level',
+                'profile.status'
             ])
             ->leftJoin('cities', 'profile.city = cities.id')
             ->leftJoin('states', 'profile.state = states.id')

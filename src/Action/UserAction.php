@@ -86,11 +86,11 @@ class UserAction
             }
         }
         $result = $this->uservices->createNewUser($data);
-        $result['vlink'] = $uri->getScheme() . '://' . $uri->getHost() .'/user/activate/'.$result['vlink'];
+        $result['vlink'] = $uri->getScheme() . '://' . $uri->getHost() . '/user/activate/' . $result['vlink'];
         if ((int) $result['data']['id'] > 0) {
-           $smsSent = $this->SendSMS('Thank you, use this link to verify your Teekonect account. '.$result['vlink'] , ('%2B'.$data['phone_no']));//
-           $result['smsStatus'] = $smsSent; 
-           $email = (new TemplatedEmail())
+            $smsSent = $this->SendSMS('Thank you, use this link to verify your Teekonect account. ' . $result['vlink'], ('%2B' . $data['phone_no']));//
+            $result['smsStatus'] = $smsSent;
+            $email = (new TemplatedEmail())
                 ->from('donotreply@briisi.com')
                 ->to($data['email'])
                 ->subject('Welcome to Teekonect')
@@ -100,7 +100,8 @@ class UserAction
 
                 // pass variables (name => value) to the template
                 ->context([
-                    'name' => $data['last_name'], 'veri_link' => $result['vlink']
+                    'name' => $data['last_name'],
+                    'veri_link' => $result['vlink']
                 ]);
             // Render the email twig template
             $this->brender->render($email);
@@ -122,7 +123,6 @@ class UserAction
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface {
-        // $this->logger->info(sprintf('User created:'));
         try {
             $uri = $request->getUri();
             $data = (array) $request->getParsedBody();
@@ -131,38 +131,85 @@ class UserAction
             $uploadedFiles = $request->getUploadedFiles();
             $item = json_decode($data['item'], true);
             $item["user_id"] = $data['uid'];
+
+            // Array to track uploaded files for cleanup
+            $uploadedFilePaths = [];
+
+            // Handle logo upload (existing functionality)
             if (isset($uploadedFiles['logo'])) {
                 $uploadedFile = $uploadedFiles['logo'];
                 if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
                     $filename = $this->moveUploadedFile($directory, $uploadedFile);
                     $item['logo'] = $uri->getScheme() . '://' . $uri->getHost() . '/upload/logo/' . $filename;
+                    $uploadedFilePaths[] = $directory . DIRECTORY_SEPARATOR . $filename;
                 } else {
                     $item['logo'] = null;
                 }
             }
+
+            // Handle front image upload
+            if (isset($uploadedFiles['front_image'])) {
+                $uploadedFile = $uploadedFiles['front_image'];
+                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                    $filename = $this->moveUploadedFile($directory, $uploadedFile);
+                    $item['front_image'] = $uri->getScheme() . '://' . $uri->getHost() . '/upload/logo/' . $filename;
+                    $uploadedFilePaths[] = $directory . DIRECTORY_SEPARATOR . $filename;
+                }
+            }
+
+            // Handle back image upload
+            if (isset($uploadedFiles['back_image'])) {
+                $uploadedFile = $uploadedFiles['back_image'];
+                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                    $filename = $this->moveUploadedFile($directory, $uploadedFile);
+                    $item['back_image'] = $uri->getScheme() . '://' . $uri->getHost() . '/upload/logo/' . $filename;
+                    $uploadedFilePaths[] = $directory . DIRECTORY_SEPARATOR . $filename;
+                }
+            }
+
+            // Attempt to save profile
             $result = $this->uservices->addProfile($item);
-            if($result){
-            $response->getBody()->write((string) json_encode($result));
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200);
-            }else{
+
+            if ($result) {
+                $response->getBody()->write((string) json_encode($result));
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(200);
+            } else {
+                // Clean up uploaded files if save failed
+                foreach ($uploadedFilePaths as $filePath) {
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+
                 $result['error']['type'] = 'Server Error';
-                $result['error']['Description'] = "Sorry, you can only create one digi-me from a template. To create a new template, kindly delete the old one and re-create.";
+                $result['error']['Description'] = "Sorry, you have reached your limit for this template. To create a new template, kindly delete an old one and re-create.";
                 $response->getBody()->write((string) json_encode($result));
                 return $response
                     ->withHeader('Content-Type', 'application/json')
                     ->withStatus(500);
             }
+
         } catch (\Throwable $th) {
+            // Clean up uploaded files if exception occurred
+            if (isset($uploadedFilePaths)) {
+                foreach ($uploadedFilePaths as $filePath) {
+                    if (file_exists($filePath)) {
+                        unlink($filePath);
+                    }
+                }
+            }
+
             $result['error']['type'] = 'Bad Request';
-            $result['error']['Description'] = "Card not saved!, Fill out all required information";
+            $result['error']['Description'] = "Card not saved! Fill out all required information";
             $response->getBody()->write((string) json_encode($result));
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(500);
         }
     }
+
 
 
     public function editProfile(
@@ -188,12 +235,12 @@ class UserAction
                 }
             }
             $result = $this->uservices->editProfile($item);
-            if($result){
-            $response->getBody()->write((string) json_encode($result));
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200);
-            }else{
+            if ($result) {
+                $response->getBody()->write((string) json_encode($result));
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(200);
+            } else {
                 $result['error']['type'] = 'Server Error';
                 $result['error']['Description'] = "Error updating Card";
                 $response->getBody()->write((string) json_encode($result));
@@ -257,23 +304,23 @@ class UserAction
     ): ResponseInterface {
         // $this->logger->info(sprintf('User created:'));
         try {
-            
+
             $data = (array) $request->getParsedBody();
             $item = explode('/', $data['item']);
             $result = $this->uservices->addOtherProfile($item, $data['uid']);
-            if ($result['subscribe'] === true){
-            $response->getBody()->write((string) json_encode($result));
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200);
-            } else{
-        
-            $result['error']['type'] = 'Server Error';
-            $result['error']['Description'] = "Sharing Failed!  Subscription may be pending on this card";
-            $response->getBody()->write((string) json_encode($result));
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500);
+            if ($result['subscribe'] === true) {
+                $response->getBody()->write((string) json_encode($result));
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(200);
+            } else {
+
+                $result['error']['type'] = 'Server Error';
+                $result['error']['Description'] = "Sharing Failed!  Subscription may be pending on this card";
+                $response->getBody()->write((string) json_encode($result));
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(500);
             }
 
 
@@ -321,7 +368,7 @@ class UserAction
     ): ResponseInterface {
         $data = (array) $request->getQueryParams();
         $result = $this->uservices->getAccountStatus($data['email']);
-        $result = $result === 1? "Account Active": ($result === 0?"Account Not Active": "Account Not Found");
+        $result = $result === 1 ? "Account Active" : ($result === 0 ? "Account Not Active" : "Account Not Found");
         $response->getBody()->write((string) json_encode($result));
         return $response
             ->withHeader('Content-Type', 'application/json')
@@ -348,7 +395,7 @@ class UserAction
     ): ResponseInterface {
         // $this->logger->info(sprintf('User created:'));
         $data = (array) $request->getParsedBody();
-        $result = $this->uservices->removeProfile($data['uid'], (int)$data['cid']);
+        $result = $this->uservices->removeProfile($data['uid'], (int) $data['cid']);
         $response->getBody()->write((string) json_encode($result));
         return $response
             ->withHeader('Content-Type', 'application/json')
@@ -457,7 +504,7 @@ class UserAction
             ->withStatus($result['statusCode']);
     }
 
-    
+
 
     public function appLogin(
         ServerRequestInterface $request,
@@ -465,36 +512,37 @@ class UserAction
     ): ResponseInterface {
         $data = (array) $request->getParsedBody();
         $result = $this->uservices->authenticateAppUser($data);
-        $response->getBody()->write((string) json_encode(($result['data']?$result['data']:$result), JSON_PRETTY_PRINT));
+        $response->getBody()->write((string) json_encode(($result['data'] ? $result['data'] : $result), JSON_PRETTY_PRINT));
         return $response
             ->withHeader('Content-Type', 'application/json')
             ->withStatus($result['statusCode']);
     }
 
-    public function SendSMS(string $msg = 'testing from app', $to): string {
+    public function SendSMS(string $msg = 'testing from app', $to): string
+    {
         $settings = $this->c->get('settings');
         $curl = curl_init();
         curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://api.twilio.com/2010-04-01/Accounts/AC2c5791d5bf5e1ff3e207fc1fce9fcb7c/Messages.json',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS => 'To='.$to.'&MessagingServiceSid='.$settings['sms']['msid'].'&Body='.$msg.'&From=%2B16109956792',
-          CURLOPT_HTTPHEADER => array(
-            'Authorization: Basic '.$settings['sms']['token'],
-            'Content-Type: application/x-www-form-urlencoded'
-          ),
+            CURLOPT_URL => 'https://api.twilio.com/2010-04-01/Accounts/AC2c5791d5bf5e1ff3e207fc1fce9fcb7c/Messages.json',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => 'To=' . $to . '&MessagingServiceSid=' . $settings['sms']['msid'] . '&Body=' . $msg . '&From=%2B16109956792',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Basic ' . $settings['sms']['token'],
+                'Content-Type: application/x-www-form-urlencoded'
+            ),
         ));
         $response = curl_exec($curl);
         curl_close($curl);
-      return $response;
+        return $response;
     }
 
-    
+
     public function moveUploadedFile($directory, UploadedFile $uploadedFile): string
     {
         $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
