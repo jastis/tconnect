@@ -55,7 +55,7 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'teekonect-app'
+          app-name: 'teekonect'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A7A1C0FAEA664F91916DD28BD5A1FA19 }}
           package: .
