@@ -1,5 +1,5 @@
 <?php
- $config = require __DIR__ . '../../env.php';
+$config = require __DIR__ . '../../env.php';
 // Error reporting for production
 error_reporting(0);
 ini_set('display_errors', '0');
@@ -13,47 +13,47 @@ $settings['temp'] = $settings['root'] . '/tmp';
 $settings['public'] = $settings['root'] . '/public';
 // Error Handling Middleware settings
 $settings['error'] = [
-// Should be set to false in production
-'display_error_details' => true,
-// Parameter is passed to the default ErrorHandler
+    // Should be set to false in production
+    'display_error_details' => false,
+    // Parameter is passed to the default ErrorHandler
 // View in rendered output by enabling the "displayErrorDetails" setting.
 // For the console and unit tests we also disable it
-'log_errors' => true,
-// Display error details in error log
-'log_error_details' => true,
+    'log_errors' => true,
+    // Display error details in error log
+    'log_error_details' => true,
 ];
 $settings['smtp'] = [
     // use 'null' for the null adapter
     'type' => 'smtp',
-    'host' => 'mail.briisi.com',
+    'host' => 'briisi.com',
     'port' => '465',
     'username' => $config['smtp']['username'],
     'password' => $config['smtp']['password'],
 ];
-$settings['assets']=  [
+$settings['assets'] = [
     // Public assets cache directory
     'path' => dirname(__DIR__) . '/public/cache',
     'logopath' => dirname(__DIR__) . '/public/upload/logo',
     'photopath' => dirname(__DIR__) . '/public/upload/photo',
     'customcardpath' => dirname(__DIR__) . '/public/upload/customcard',
     'cardrequestpath' => dirname(__DIR__) . '/public/upload/request',
-    ];
+];
 
 $settings['sms']['asid'] = $config['sms']['aisd'];
-    $settings['sms']['token'] = $config['sms']['token'];
-    $settings['sms']['msid'] = $config['sms']['msid'];
-    
+$settings['sms']['token'] = $config['sms']['token'];
+$settings['sms']['msid'] = $config['sms']['msid'];
+
 
 $settings['security'] = [
-    'secretKey'  => $config['security']['secretKey'],
+    'secretKey' => $config['security']['secretKey'],
     'serverName' => $config['security']['serverName'],
-    ];
+];
 
-$settings['cost']=$config['cost'];
+$settings['cost'] = $config['cost'];
 
 $settings['db'] = [
     'driver' => \Cake\Database\Driver\Mysql::class,
-    'host' => $config['db']['host'] ,//'localhost:3308',
+    'host' => $config['db']['host'],//'localhost:3308',
     'database' => $config['db']['name'],
     'username' => $config['db']['username'],
     'password' => $config['db']['password'],

@@ -19,7 +19,7 @@ $settings['db']['password'] = 'UMPX640UID2A8073$';
 // $settings['db']['password'] = '[gEW]tR!UcTa';
 
 $settings['smtp']['username'] = 'donotreply@briisi.com';
-$settings['smtp']['password'] = '40OSs!Y7{}IU';
+$settings['smtp']['password'] = 'Pa55w0rd123456789';
 
 $settings['security']['secretKey'] = 'bDS6lzFqvvSQ8ALbOxatm7(Vk7mLQyzqaS34Q4oR1ew=';
 $settings['security']['serverName'] = 'www.briisi.com';
