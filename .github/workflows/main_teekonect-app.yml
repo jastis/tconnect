@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy PHP app to Azure Web App - teekonect
+name: Build and deploy PHP app to Azure Web App - teekonect-app
 
 on:
   push:
@@ -12,18 +12,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read #This is required for actions/checkout
 
     steps:
-      - uses: actions/checkout@v4 # Updated to v4
+      - uses: actions/checkout@v4
 
-      - name: Setup PHP 8.2
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2' # Using PHP 8.2
+          php-version: '8.2'
 
       - name: Check if composer.json exists
         id: check_files
-        uses: andstor/file-existence-action@v2 # Latest version
+        uses: andstor/file-existence-action@v1
         with:
           files: 'composer.json'
 
@@ -31,11 +33,14 @@ jobs:
         if: steps.check_files.outputs.files_exists == 'true'
         run: composer validate --no-check-publish && composer install --prefer-dist --no-progress
 
+      - name: Zip artifact for deployment
+        run: zip release.zip ./* -r
+
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4 # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
           name: php-app
-          path: . # Upload all files
+          path: release.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,19 +48,31 @@ jobs:
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v4 # Updated to v4
+        uses: actions/download-artifact@v4
         with:
           name: php-app
-          path: .
+
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_51140C3B5C7C474B87445DE02F02BB9E }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FA9A400BF4D945B1BC8FE591DF4ED83E }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9C065DDE781E4F58B354F08FFB36FB6A }}
 
       - name: 'Deploy to Azure Web App'
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'teekonect'
+          app-name: 'teekonect-app'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A7A1C0FAEA664F91916DD28BD5A1FA19 }}
           package: .
+          
